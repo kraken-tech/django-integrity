@@ -20,9 +20,10 @@ install: install_python_packages
 .PHONY:test
 test:
 	tox --parallel
+	./scripts/type-ratchet.py check
 
 .PHONY:lint
-lint: format style
+lint: format style typing
 
 .PHONY:update
 update:
@@ -56,3 +57,7 @@ format:
 .PHONY:style
 style:
 	ruff check --fix .
+
+.PHONY:typing
+typing:
+	./scripts/type-ratchet.py update

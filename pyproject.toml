@@ -47,7 +47,13 @@ dev = [
     "tox",
 
     # Linting
+    "mypy",
+    "mypy-json-report",
     "ruff",
+
+    # CLI utils
+    "rich",
+    "typer",
 ]
 
 # Ruff
@@ -80,6 +86,23 @@ section-order = [
     "django_integrity",
     "tests",
 ]
+
+# Mypy
+# ----
+
+[tool.mypy]
+files = "."
+exclude = [
+    "build",
+    "dist",
+    "env",
+    "venv",
+]
+
+# Use strict defaults
+strict = true
+warn_unreachable = true
+warn_no_return = true
 
 # Pytest
 # ------
