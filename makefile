@@ -7,6 +7,7 @@ help:
 	@echo "  install: Install dev dependencies"
 	@echo "  update: Update dev dependencies"
 	@echo "  test: Run Python tests"
+	@echo "  lint: Run formatters and static analysis checks"
 	@echo "  package: Build a wheel package"
 
 
@@ -19,6 +20,9 @@ install: install_python_packages
 .PHONY:test
 test:
 	tox --parallel
+
+.PHONY:lint
+lint: format style
 
 .PHONY:update
 update:
@@ -44,3 +48,11 @@ install_prerequisites: requirements/prerequisites.txt
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
 	pip-compile pyproject.toml --quiet --resolver=backtracking --extra=dev --output-file=requirements/development.txt
+
+.PHONY:format
+format:
+	ruff format .
+
+.PHONY:style
+style:
+	ruff check --fix .

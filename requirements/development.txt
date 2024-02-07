@@ -35,6 +35,8 @@ pyproject-api==1.6.1
     # via tox
 pytest==8.0.0
     # via django_integrity (pyproject.toml)
+ruff==0.2.1
+    # via django_integrity (pyproject.toml)
 tox==4.12.1
     # via django_integrity (pyproject.toml)
 virtualenv==20.25.0

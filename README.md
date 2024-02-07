@@ -67,6 +67,17 @@ you many run the tests with:
 ```sh
 pytest
 ```
+
+### Static analysis
+
+Run all static analysis tools with:
+
+```sh
+make lint
+```
+
+This may make changes to the local files if improvements are available.
+
 ### Managing dependencies
 
 Package dependencies are declared in `pyproject.toml`.

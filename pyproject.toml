@@ -45,6 +45,40 @@ dev = [
     # Testing
     "pytest",
     "tox",
+
+    # Linting
+    "ruff",
+]
+
+# Ruff
+# ----
+
+[tool.ruff]
+lint.select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+]
+lint.ignore = [
+    "E501",  # line too long - the formatter takes care of this for us
+]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+section-order = [
+    "future",
+    "standard-library",
+    "third-party",
+    "first-party",
+    "project",
+    "local-folder",
+]
+
+[tool.ruff.lint.isort.sections]
+"project" = [
+    "django_integrity",
+    "tests",
 ]
 
 # Pytest
