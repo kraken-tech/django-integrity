@@ -1,0 +1,29 @@
+# Packaging
+# ---------
+
+[build-system]
+requires = ["setuptools>=67.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+# This is the default but we include it to be explicit.
+include-package-data = true
+
+# Project
+# -------
+
+[project]
+name = "django_integrity"
+version = "0.0-alpha"
+dependencies = [
+]
+
+[project.urls]
+# See https://daniel.feldroy.com/posts/2023-08-pypi-project-urls-cheatsheet for
+# additional URLs that can be included here.
+repository = "https://github.com/octoenergy/django-integrity"
+changelog = "https://github.com/octoenergy/django-integrity/blob/main/CHANGELOG.md"
+
+[project.optional-dependencies]
+dev = [
+]
