@@ -5,7 +5,10 @@ and handling IntegrityErrors in Django projects which use PostgreSQL.
 
 ## Supported dependencies
 
+This package is tested against:
+
 - Python 3.10, 3.11, or 3.12.
+- Django 4.1, 4.2, or 5.0.
 
 ## Local development
 
@@ -32,7 +35,16 @@ environments.
 
 ### Installing Python dependencies
 
-To install all the development dependencies in your virtual environment, run:
+Note: You might not need to install the below requirements if you only intend to run the tests,
+because we use [tox] for the tests, and it manages the installation of dependencies.
+
+If you only intend to run the tests with [tox], then you may only require:
+
+```sh
+pip install tox
+```
+
+Alternatively, to install all the development dependencies in your virtual environment, run:
 
 ```sh
 make install
@@ -41,6 +53,20 @@ make install
 [direnv]: https://direnv.net
 [virtualenvwrapper]: https://virtualenvwrapper.readthedocs.io/
 
+### Testing
+
+To start the tests with [tox], run:
+
+```sh
+make test
+```
+
+Alternatively, if you want to run the tests directly in your virtual environment,
+you many run the tests with:
+
+```sh
+pytest
+```
 ### Managing dependencies
 
 Package dependencies are declared in `pyproject.toml`.
@@ -115,3 +141,5 @@ make install
 ```
 
 to sync your installed packages with the updated versions pinned in `requirements/development.txt`.
+
+[tox]: https://tox.wiki

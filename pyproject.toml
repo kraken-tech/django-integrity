@@ -42,4 +42,14 @@ changelog = "https://github.com/octoenergy/django-integrity/blob/main/CHANGELOG.
 
 [project.optional-dependencies]
 dev = [
+    # Testing
+    "pytest",
+    "tox",
 ]
+
+# Pytest
+# ------
+
+[tool.pytest.ini_options]
+# Ensure error warnings are converted into test errors.
+filterwarnings = "error"

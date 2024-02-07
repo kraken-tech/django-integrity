@@ -6,6 +6,7 @@ help:
 	@echo "  help: Show this help message"
 	@echo "  install: Install dev dependencies"
 	@echo "  update: Update dev dependencies"
+	@echo "  test: Run Python tests"
 	@echo "  package: Build a wheel package"
 
 
@@ -14,6 +15,10 @@ help:
 
 .PHONY:install
 install: install_python_packages
+
+.PHONY:test
+test:
+	tox --parallel
 
 .PHONY:update
 update:
