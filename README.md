@@ -3,6 +3,10 @@
 Django Integrity contains tools for controlling deferred constraints
 and handling IntegrityErrors in Django projects which use PostgreSQL.
 
+## Supported dependencies
+
+- Python 3.10, 3.11, or 3.12.
+
 ### Managing dependencies
 
 Package dependencies are declared in `pyproject.toml`.

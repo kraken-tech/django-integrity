@@ -9,14 +9,30 @@ build-backend = "setuptools.build_meta"
 # This is the default but we include it to be explicit.
 include-package-data = true
 
+[tool.setuptools.packages.find]
+where = ["src"]
+
 # Project
 # -------
 
 [project]
 name = "django_integrity"
 version = "0.0-alpha"
+requires-python = ">=3.10"
 dependencies = [
 ]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3 :: Only",
+  "Typing :: Typed",
+]
+
 
 [project.urls]
 # See https://daniel.feldroy.com/posts/2023-08-pypi-project-urls-cheatsheet for
