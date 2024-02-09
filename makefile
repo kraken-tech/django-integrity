@@ -27,7 +27,7 @@ lint: format style typing
 
 .PHONY:update
 update:
-	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=dev --output-file=requirements/development.txt
+	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=dev --output-file=requirements/development.txt --unsafe-package django
 
 .PHONY:package
 package:
@@ -48,7 +48,7 @@ install_prerequisites: requirements/prerequisites.txt
 
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
-	pip-compile pyproject.toml --quiet --resolver=backtracking --extra=dev --output-file=requirements/development.txt
+	pip-compile pyproject.toml --quiet --resolver=backtracking --extra=dev --output-file=requirements/development.txt --unsafe-package django
 
 .PHONY:format
 format:
