@@ -65,7 +65,7 @@ Alternatively, if you want to run the tests directly in your virtual environment
 you many run the tests with:
 
 ```sh
-pytest
+python -m pytest
 ```
 
 ### Static analysis

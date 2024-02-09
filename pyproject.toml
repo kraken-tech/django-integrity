@@ -44,6 +44,7 @@ changelog = "https://github.com/octoenergy/django-integrity/blob/main/CHANGELOG.
 dev = [
     # Testing
     "pytest",
+    "pytest-django",
     "tox",
 
     # Linting
@@ -110,3 +111,5 @@ warn_no_return = true
 [tool.pytest.ini_options]
 # Ensure error warnings are converted into test errors.
 filterwarnings = "error"
+
+DJANGO_SETTINGS_MODULE = "tests.example_app.settings"

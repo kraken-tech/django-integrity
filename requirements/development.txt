@@ -48,6 +48,10 @@ pygments==2.17.2
 pyproject-api==1.6.1
     # via tox
 pytest==8.0.0
+    # via
+    #   django_integrity (pyproject.toml)
+    #   pytest-django
+pytest-django==4.8.0
     # via django_integrity (pyproject.toml)
 rich==13.7.0
     # via django_integrity (pyproject.toml)
