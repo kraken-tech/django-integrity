@@ -14,6 +14,10 @@ colorama==0.4.6
     # via tox
 distlib==0.3.8
     # via virtualenv
+django-stubs==4.2.7
+    # via django_integrity (pyproject.toml)
+django-stubs-ext==4.2.7
+    # via django-stubs
 filelock==3.13.1
     # via
     #   tox
@@ -61,8 +65,14 @@ tox==4.12.1
     # via django_integrity (pyproject.toml)
 typer==0.9.0
     # via django_integrity (pyproject.toml)
+types-pytz==2024.1.0.20240203
+    # via django-stubs
+types-pyyaml==6.0.12.12
+    # via django-stubs
 typing-extensions==4.9.0
     # via
+    #   django-stubs
+    #   django-stubs-ext
     #   mypy
     #   typer
 virtualenv==20.25.0
