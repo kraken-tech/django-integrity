@@ -1,4 +1,130 @@
+import contextlib
+from collections.abc import Iterator, Sequence
+
 from django import db as django_db
+from psycopg2 import sql
+
+
+# Note [Deferrable constraints]
+# -----------------------------
+# Only some types of PostgreSQL constraint can be DEFERRED, and
+# they may be deferred if they are created with the DEFERRABLE option.
+#
+# These types of constraints can be DEFERRABLE:
+# - UNIQUE
+# - PRIMARY KEY
+# - REFERENCES (foreign key)
+# - EXCLUDE
+#
+# These types of constraints can never be DEFERRABLE:
+# - CHECK
+# - NOT NULL
+#
+# By default, Django makes foreign key constraints DEFERRABLE INITIALLY DEFERRED,
+# so they are checked at the end of the transaction,
+# rather than when the statement is executed.
+#
+# All other constraints are IMMEDIATE (and not DEFERRABLE) by default.
+# This can be changed by passing the `deferrable` argument to the constraint.
+#
+# Further reading:
+# - https://www.postgresql.org/docs/current/sql-set-constraints.html
+# - https://www.postgresql.org/docs/current/sql-createtable.html
+# - https://docs.djangoproject.com/en/5.0/ref/models/constraints/#deferrable
+
+
+@contextlib.contextmanager
+def immediate(names: Sequence[str], *, using: str) -> Iterator[None]:
+    """
+    Temporarily set named DEFERRABLE constraints to IMMEDIATE.
+
+    This is useful for catching constraint violations as soon as they occur,
+    rather than at the end of the transaction.
+
+    This is especially useful for foreign key constraints in Django,
+    which are DEFERRED by default.
+
+    We presume that any provided constraints were previously DEFERRED,
+    and we restore them to that state after the context manager exits.
+
+    To be sure that the constraints are restored to DEFERRED
+    even if an exception is raised, we use a savepoint.
+
+    This could be expensive if used in a loop because on every iteration we would
+    create and close (or roll back) a savepoint, and set and unset the constraint state.
+
+    # See Note [Deferrable constraints]
+    """
+    set_immediate(names, using=using)
+    try:
+        with django_db.transaction.atomic(using=using):
+            yield
+    finally:
+        set_deferred(names, using=using)
+
+
+def set_all_immediate(*, using: str) -> None:
+    """
+    Set all constraints to IMMEDIATE for the remainder of the transaction.
+
+    # See Note [Deferrable constraints]
+    """
+    if django_db.transaction.get_autocommit(using):
+        raise NotInTransaction
+
+    with django_db.connections[using].cursor() as cursor:
+        cursor.execute("SET CONSTRAINTS ALL IMMEDIATE")
+
+
+def set_immediate(names: Sequence[str], *, using: str) -> None:
+    """
+    Set particular constraints to IMMEDIATE for the remainder of the transaction.
+
+    # See Note [Deferrable constraints]
+    """
+    if django_db.transaction.get_autocommit(using):
+        raise NotInTransaction
+
+    if not names:
+        return
+
+    query = sql.SQL("SET CONSTRAINTS {names} IMMEDIATE").format(
+        names=sql.SQL(", ").join(sql.Identifier(name) for name in names)
+    )
+
+    with django_db.connections[using].cursor() as cursor:
+        cursor.execute(query)
+
+
+def set_deferred(names: Sequence[str], *, using: str) -> None:
+    """
+    Set particular constraints to DEFERRED for the remainder of the transaction.
+
+    # See Note [Deferrable constraints]
+    """
+    if django_db.transaction.get_autocommit(using):
+        raise NotInTransaction
+
+    if not names:
+        return
+
+    query = sql.SQL("SET CONSTRAINTS {names} DEFERRED").format(
+        names=sql.SQL(", ").join(sql.Identifier(name) for name in names)
+    )
+
+    with django_db.connections[using].cursor() as cursor:
+        cursor.execute(query)
+
+
+class NotInTransaction(Exception):
+    """
+    Raised when we try to change the state of constraints outside of a transaction.
+
+    It doesn't make sense to change the state of constraints outside of a transaction,
+    because the change of state would only last for the remainder of the transaction.
+
+    See https://www.postgresql.org/docs/current/sql-set-constraints.html
+    """
 
 
 def foreign_key_constraint_name(
