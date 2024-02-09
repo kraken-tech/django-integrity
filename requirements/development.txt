@@ -4,6 +4,8 @@
 #
 #    pip-compile --extra=dev --output-file=requirements/development.txt --unsafe-package=django pyproject.toml
 #
+asgiref==3.7.2
+    # via django
 cachetools==5.3.2
     # via tox
 chardet==5.2.0
@@ -14,10 +16,14 @@ colorama==0.4.6
     # via tox
 distlib==0.3.8
     # via virtualenv
+dj-database-url==2.1.0
+    # via django_integrity (pyproject.toml)
 django-stubs==4.2.7
     # via django_integrity (pyproject.toml)
 django-stubs-ext==4.2.7
     # via django-stubs
+environs==10.3.0
+    # via django_integrity (pyproject.toml)
 filelock==3.13.1
     # via
     #   tox
@@ -26,6 +32,8 @@ iniconfig==2.0.0
     # via pytest
 markdown-it-py==3.0.0
     # via rich
+marshmallow==3.20.2
+    # via environs
 mdurl==0.1.2
     # via markdown-it-py
 mypy==1.8.0
@@ -36,6 +44,7 @@ mypy-json-report==1.1.0
     # via django_integrity (pyproject.toml)
 packaging==23.2
     # via
+    #   marshmallow
     #   pyproject-api
     #   pytest
     #   tox
@@ -57,10 +66,14 @@ pytest==8.0.0
     #   pytest-django
 pytest-django==4.8.0
     # via django_integrity (pyproject.toml)
+python-dotenv==1.0.1
+    # via environs
 rich==13.7.0
     # via django_integrity (pyproject.toml)
 ruff==0.2.1
     # via django_integrity (pyproject.toml)
+sqlparse==0.4.4
+    # via django
 tox==4.12.1
     # via django_integrity (pyproject.toml)
 typer==0.9.0
@@ -71,6 +84,7 @@ types-pyyaml==6.0.12.12
     # via django-stubs
 typing-extensions==4.9.0
     # via
+    #   dj-database-url
     #   django-stubs
     #   django-stubs-ext
     #   mypy

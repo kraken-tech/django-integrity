@@ -20,6 +20,9 @@ name = "django_integrity"
 version = "0.0-alpha"
 requires-python = ">=3.10"
 dependencies = [
+    # Psycopg2 is required, but we do not include it here.
+    # We cannot decide for users if they want to use psycopg2 or psycopg2-binary.
+    # See https://www.psycopg.org/docs/install.html#psycopg-vs-psycopg-binary
 ]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -43,7 +46,9 @@ changelog = "https://github.com/octoenergy/django-integrity/blob/main/CHANGELOG.
 [project.optional-dependencies]
 dev = [
     # Testing
+    "dj-database-url",
     "django-stubs",
+    "environs",
     "pytest",
     "pytest-django",
     "tox",
