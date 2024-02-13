@@ -31,6 +31,10 @@ source .venv/bin/activate
 You could also use [virtualenvwrapper], [direnv] or any similar tool to help manage your virtual
 environments.
 
+### Install PostgreSQL
+
+Ensure that PostgreSQL with minimum version 12 is installed and running on your local machine. 
+
 ### Installing Python dependencies
 
 > [!NOTE]
