@@ -4,7 +4,7 @@
 
 ### Creating a virtual environment
 
-Ensure one of the above Pythons is installed and used by the `python` executable:
+Ensure one of the supported Pythons (see README) is installed and used by the `python` executable:
 
 ```sh
 python --version
@@ -23,7 +23,7 @@ environments.
 
 ### Install PostgreSQL
 
-Ensure that PostgreSQL with minimum version 12 is installed and running on your local machine.
+Ensure that a supported version of PostgreSQL (see README) is installed and running on your local machine.
 
 ### Installing Python dependencies
 
