@@ -12,6 +12,7 @@ build/
 
 # Testing
 .pytest_cache/
+.tox/
 
 # Environments
 .venv/
