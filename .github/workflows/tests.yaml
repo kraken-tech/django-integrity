@@ -46,8 +46,8 @@ jobs:
             3.10
           cache: 'pip'
 
-      - name: Install requirements
-        run: make install
+      - name: Install tox
+        run: pip install tox
 
       - name: Run the tests
         run: tox --parallel --parallel-no-spinner --skip-missing-interpreters=false
