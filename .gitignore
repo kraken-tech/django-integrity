@@ -20,3 +20,6 @@ build/
 
 # Environment variables
 .env
+
+# Pyenv
+.python-version
