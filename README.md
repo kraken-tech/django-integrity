@@ -1,7 +1,7 @@
 # Django Integrity
 
 Django Integrity contains tools for controlling deferred constraints
-and handling IntegrityErrors in Django projects which use PostgreSQL.
+and handling `IntegrityError`s in Django projects which use PostgreSQL.
 
 ## Supported dependencies
 
@@ -14,13 +14,11 @@ This package is tested against:
 
 ### Creating a virtual environment
 
-Ensure Python is installed and used by the `python` executable:
+Ensure one of the above Pythons is installed and used by the `python` executable:
 
 ```sh
 python --version
 ```
-
-Be sure to check that the Python version you are using is in the supported versions listed above.
 
 Then create and activate a virtual environment. If you don't have any other way of managing virtual
 environments this can be done by running:
@@ -35,8 +33,9 @@ environments.
 
 ### Installing Python dependencies
 
-Note: You might not need to install the below requirements if you only intend to run the tests,
-because we use [tox] for the tests, and it manages the installation of dependencies.
+> [!NOTE]
+> You might not need to install the below requirements if you only intend to run the tests,
+> because we use [tox] for the tests, and it manages the installation of dependencies.
 
 If you only intend to run the tests with [tox], then you may only require:
 
