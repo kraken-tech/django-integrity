@@ -12,6 +12,7 @@ build/
 
 # Testing
 .pytest_cache/
+.tox/
 
 # Environments
 .venv/
@@ -20,3 +21,6 @@ build/
 
 # Environment variables
 .env
+
+# Pyenv
+.python-version
