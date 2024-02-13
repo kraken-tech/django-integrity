@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 5
 
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+
     services:
       postgres:
         image: postgres
@@ -23,10 +27,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.11", "3.12"]
 
     steps:
       - name: Clone the code
