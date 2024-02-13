@@ -14,10 +14,16 @@ jobs:
     strategy:
       matrix:
         python-version: ["3.10", "3.11", "3.12"]
+        postgres-image:
+          - "postgres:12"
+          - "postgres:13"
+          - "postgres:14"
+          - "postgres:15"
+          - "postgres:16"
 
     services:
       postgres:
-        image: postgres
+        image: ${{ matrix.postgres-image }}
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
