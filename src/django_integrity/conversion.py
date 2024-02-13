@@ -16,6 +16,13 @@ def refine_integrity_error(rules: Mapping[_Rule, Exception]) -> Iterator[None]:
     Convert a generic IntegrityError into a more specific exception.
 
     The conversion is based on a mapping of rules to exceptions.
+
+    Args:
+        rules: A mapping of rules to the exceptions we'll raise if they match.
+
+    Raises:
+        An error from the rules mapping if an IntegrityError matches a rule.
+        Otherwise, the original IntegrityError.
     """
     try:
         yield
@@ -29,6 +36,15 @@ def refine_integrity_error(rules: Mapping[_Rule, Exception]) -> Iterator[None]:
 class _Rule(abc.ABC):
     @abc.abstractmethod
     def is_match(self, error: django_db.IntegrityError) -> bool:
+        """
+        Determine if the rule matches the given IntegrityError.
+
+        Args:
+            error: The IntegrityError to check.
+
+        Returns:
+            True if the rule matches the error, False otherwise.
+        """
         ...
 
 

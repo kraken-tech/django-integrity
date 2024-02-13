@@ -54,6 +54,13 @@ def immediate(names: Sequence[str], *, using: str) -> Iterator[None]:
     create and close (or roll back) a savepoint, and set and unset the constraint state.
 
     # See Note [Deferrable constraints]
+
+    Args:
+        names: The names of the constraints to change.
+        using: The name of the database connection to use.
+
+    Raises:
+        NotInTransaction: When we try to change constraints outside of a transaction.
     """
     set_immediate(names, using=using)
     try:
@@ -68,6 +75,12 @@ def set_all_immediate(*, using: str) -> None:
     Set all constraints to IMMEDIATE for the remainder of the transaction.
 
     # See Note [Deferrable constraints]
+
+    Args:
+        using: The name of the database connection to use.
+
+    Raises:
+        NotInTransaction: When we try to change constraints outside of a transaction.
     """
     if django_db.transaction.get_autocommit(using):
         raise NotInTransaction
@@ -81,6 +94,13 @@ def set_immediate(names: Sequence[str], *, using: str) -> None:
     Set particular constraints to IMMEDIATE for the remainder of the transaction.
 
     # See Note [Deferrable constraints]
+
+    Args:
+        names: The names of the constraints to set to IMMEDIATE.
+        using: The name of the database connection to use.
+
+    Raises:
+        NotInTransaction: When we try to change constraints outside of a transaction.
     """
     if django_db.transaction.get_autocommit(using):
         raise NotInTransaction
@@ -101,6 +121,13 @@ def set_deferred(names: Sequence[str], *, using: str) -> None:
     Set particular constraints to DEFERRED for the remainder of the transaction.
 
     # See Note [Deferrable constraints]
+
+    Args:
+        names: The names of the constraints to set to DEFERRED.
+        using: The name of the database connection to use.
+
+    Raises:
+        NotInTransaction: When we try to change constraints outside of a transaction.
     """
     if django_db.transaction.get_autocommit(using):
         raise NotInTransaction
@@ -140,6 +167,18 @@ def foreign_key_constraint_name(
     This means that the constraint name is not deterministic based on the model and field alone.
 
     Django surely ought to have a public method for this, but it doesn't!
+
+    Args:
+        model: The model that contains the field.
+        field_name: The name of the field.
+        using: The name of the database connection to use.
+
+    Raises:
+        django.core.exceptions.FieldDoesNotExist: When the field is not on the model.
+        NotAForeignKey: When the field is not a foreign key.
+
+    Returns:
+        The name of the foreign key constraint.
     """
     field = model._meta.get_field(field_name)
 
