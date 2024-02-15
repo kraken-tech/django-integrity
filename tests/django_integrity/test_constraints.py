@@ -48,6 +48,17 @@ class TestSetAllImmediate:
             # The ForeignKey constraint should be enforced immediately.
             test_models.ForeignKeyModel.objects.create(related_id=42)
 
+    @pytest.mark.django_db
+    @pytest.mark.xfail(raises=django_db.IntegrityError)
+    def test_constraint_not_set(self):
+        # This try block proves that the constraint isn't enforced immediately.
+        # It's deferred, so the error is raised in the shutdown phase of the test.
+        # We use xfail to catch the error and prevent the test from failing.
+        try:
+            test_models.ForeignKeyModel.objects.create(related_id=42)
+        except django_db.IntegrityError:
+            pytest.fail("The ForeignKey constraint should be deferred.")
+
     @pytest.mark.django_db(transaction=True)
     def test_not_in_transaction(self):
         # Fail if we're not in a transaction.
