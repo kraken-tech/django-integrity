@@ -143,6 +143,16 @@ class TestPrimaryKey:
             with conversion.refine_integrity_error(rules):
                 test_models.PrimaryKeyModel.objects.create(pk=existing_primary_key)
 
+    def test_model_without_primary_key(self):
+        """
+        We cannot create a PrimaryKey rule for a model without a primary key.
+        """
+        with pytest.raises(conversion.ModelHasNoPrimaryKey):
+            conversion.PrimaryKey(
+                # An abstract model without a primary key.
+                model=test_models.AbstractModel
+            )
+
 
 @pytest.mark.django_db
 class TestNotNull:

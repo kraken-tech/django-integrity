@@ -60,3 +60,8 @@ class UniqueTogetherModel(models.Model):
                 name="unique_together_model_field_1_field_2_key",
             ),
         )
+
+
+class AbstractModel(models.Model):
+    class Meta:
+        abstract = True
