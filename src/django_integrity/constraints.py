@@ -2,7 +2,11 @@ import contextlib
 from collections.abc import Iterator, Sequence
 
 from django import db as django_db
-from psycopg2 import sql
+
+try:
+    from psycopg import sql
+except ImportError:
+    from psycopg2 import sql
 
 
 # Note [Deferrable constraints]

@@ -6,8 +6,12 @@ import dataclasses
 import re
 from collections.abc import Iterator, Mapping
 
-import psycopg2
 from django import db as django_db
+
+try:
+    import psycopg
+except ImportError:
+    import psycopg2 as psycopg
 
 
 @contextlib.contextmanager
@@ -57,7 +61,7 @@ class Named(_Rule):
     name: str
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
-        if not isinstance(error.__cause__, psycopg2.errors.IntegrityError):
+        if not isinstance(error.__cause__, psycopg.errors.IntegrityError):
             return False
 
         return error.__cause__.diag.constraint_name == self.name
@@ -75,7 +79,7 @@ class Unique(_Rule):
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
-        if not isinstance(error.__cause__, psycopg2.errors.UniqueViolation):
+        if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
         match = self._pattern.match(error.__cause__.diag.message_detail)
@@ -114,7 +118,7 @@ class PrimaryKey(_Rule):
             raise ModelHasNoPrimaryKey
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
-        if not isinstance(error.__cause__, psycopg2.errors.UniqueViolation):
+        if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
         match = self._pattern.match(error.__cause__.diag.message_detail)
@@ -148,7 +152,7 @@ class NotNull(_Rule):
     field: str
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
-        if not isinstance(error.__cause__, psycopg2.errors.NotNullViolation):
+        if not isinstance(error.__cause__, psycopg.errors.NotNullViolation):
             return False
 
         return (
@@ -171,7 +175,7 @@ class ForeignKey(_Rule):
     )
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
-        if not isinstance(error.__cause__, psycopg2.errors.ForeignKeyViolation):
+        if not isinstance(error.__cause__, psycopg.errors.ForeignKeyViolation):
             return False
 
         detail_match = self._detail_pattern.match(error.__cause__.diag.message_detail)
