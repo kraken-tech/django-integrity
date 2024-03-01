@@ -158,11 +158,19 @@ class TestImmediate:
             using="default",
         )
 
+        context_manager_successfully_entered = False
+
         # An error should be raised immediately.
         with pytest.raises(django_db.IntegrityError):
             with constraints.immediate((constraint_name,), using="default"):
+                context_manager_successfully_entered = True
+
                 # Create an instance that violates a deferred constraint.
                 test_models.ForeignKeyModel.objects.create(related_id=42)
+
+        # Just to be sure the context manager was entered,
+        # and the error didn't come a mistake in the context manager.
+        assert context_manager_successfully_entered is True
 
     @pytest.mark.django_db
     def test_deferral_restored(self):
