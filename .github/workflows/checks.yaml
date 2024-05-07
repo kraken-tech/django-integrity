@@ -25,8 +25,15 @@ jobs:
             requirements/*.txt
             tox.ini
 
+      - name: Make a virtualenv
+        run: python3 -m venv .venv
+
       - name: Install requirements
-        run: make install
+        run: |
+          source .venv/bin/activate
+          make install
 
       - name: Run linters
-        run: make lint
+        run: |
+          source .venv/bin/activate
+          make lint

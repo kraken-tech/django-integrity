@@ -50,10 +50,18 @@ jobs:
             requirements/*.txt
             tox.ini
 
-      - name: Install tox
-        run: pip install -r requirements/tox.txt
+      - name: Make a virtualenv
+        run: python3 -m venv .venv
+
+      - name: Install requirements
+        run: |
+          source .venv/bin/activate
+          pip install --requirement requirements/prerequisites.txt
+          uv pip install --requirement requirements/tox.txt
 
       - name: Run the tests
-        run: tox --parallel --parallel-no-spinner --skip-missing-interpreters=false
+        run: |
+          source .venv/bin/activate
+          tox --parallel --parallel-no-spinner --skip-missing-interpreters=false
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/django_integrity
