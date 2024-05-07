@@ -23,7 +23,7 @@ jobs:
     name: Verify versions
     runs-on: ubuntu-22.04
     timeout-minutes: 5
-    if: github.repository_owner == 'kraken-tech' # && github.ref == 'refs/heads/main'
+    if: github.repository_owner == 'kraken-tech' && github.ref == 'refs/heads/main'
 
     steps:
       - name: Clone the code
