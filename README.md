@@ -59,6 +59,36 @@ Perhaps we ran out of 32-bit integers for our ID column?
 Failing to be specific on these points could lead to bugs
 where we catch an exception without realising it was not the one we expected.
 
+### Example
+
+```python
+from django_integrity import conversion
+from users.models import User
+
+
+class UserAlreadyExists(Exception): ...
+class EmailCannotBeNull(Exception): ...
+class EmailMustBeLowerCase(Exception): ...
+
+
+def create_user(email: str) -> User:
+    """
+    Creates a user with the provided email address.
+
+    Raises:
+        UserAlreadyExists: If the email was not unique.
+        EmailCannotBeNull: If the email was None.
+        EmailMustBeLowerCase: If the email had a non-lowercase character.
+    """
+    rules = {
+        conversion.Unique(model=User, fields=("email",): UserAlreadyExists,
+        conversion.NotNull(model=User, field="email"): EmailCannotBeNull,
+        conversion.Named(name="constraint_islowercase"): EmailMustBeLowerCase,
+    }
+    with conversion.refine_integrity_error(rules):
+        User.objects.create(email=email)
+```
+
 ## Supported dependencies
 
 This package is tested against:
