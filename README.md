@@ -38,7 +38,7 @@ the constraint would be checked on `INSERT`,
 and it would be much easier to catch.
 
 More generally,
-if you have custom deferrable constraint,
+if you have a custom deferrable constraint,
 it may be useful to change the default behaviour with these tools.
 
 ## Refining `IntegrityError`
