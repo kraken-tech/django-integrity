@@ -19,6 +19,7 @@ where = ["src"]
 name = "django_integrity"
 version = "0.0-alpha"
 license.file = "LICENSE"
+readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     # We cannot decide for users if they want to use psycopg2, psycopg2-binary, or
@@ -64,6 +65,7 @@ dev = [
 
     # CLI utils
     "rich",
+    "tomli >= 1.1.0 ; python_version < '3.11'",
     "typer",
 ]
 

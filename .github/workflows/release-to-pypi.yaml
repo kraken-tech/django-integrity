@@ -1,0 +1,62 @@
+---
+name: Release to PyPI
+
+on:
+  pull_request:
+  push:
+    tags:
+      - v*
+
+jobs:
+  build:
+    name: Build dist package
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Clone the code
+        uses: actions/checkout@v4
+
+      - uses: hynek/build-and-inspect-python-package@v2
+
+  verify:
+    name: Verify versions
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    if: github.repository_owner == 'kraken-tech' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Clone the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install requirements
+        run: make install
+
+      - name: Verify version
+        run: ./scripts/verify-version-tag.py
+
+  release:
+    name: Publish to pypi.org
+    environment: release
+    if: github.repository_owner == 'kraken-tech' && github.ref == 'refs/heads/main'
+    needs: [build, verify]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    permissions:
+      id-token: write
+
+    steps:
+      - name: Download packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+
+      - name: Upload package to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
