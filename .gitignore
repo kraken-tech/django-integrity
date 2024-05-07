@@ -16,6 +16,7 @@ build/
 
 # Environments
 .venv/
+venv/
 .direnv/
 .envrc
 
