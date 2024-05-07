@@ -7,14 +7,14 @@
 Ensure one of the supported Pythons (see README) is installed and used by the `python` executable:
 
 ```sh
-python --version
+python3 --version
 ```
 
 Then create and activate a virtual environment. If you don't have any other way of managing virtual
 environments this can be done by running:
 
 ```sh
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 ```
 
@@ -58,7 +58,7 @@ Alternatively, if you want to run the tests directly in your virtual environment
 you many run the tests with:
 
 ```sh
-python -m pytest
+python3 -m pytest
 ```
 
 ### Static analysis
