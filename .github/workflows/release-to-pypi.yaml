@@ -23,7 +23,7 @@ jobs:
     name: Verify versions
     runs-on: ubuntu-22.04
     timeout-minutes: 5
-    if: github.repository_owner == 'kraken-tech' && github.ref == 'refs/heads/main'
+    if: github.repository_owner == 'kraken-tech' && github.ref_type == 'tag'
 
     steps:
       - name: Clone the code
@@ -43,7 +43,7 @@ jobs:
   release:
     name: Publish to pypi.org
     environment: release
-    if: github.repository_owner == 'kraken-tech' && github.ref == 'refs/heads/main'
+    if: github.repository_owner == 'kraken-tech' && github.ref_type == 'tag'
     needs: [build, verify]
     runs-on: ubuntu-22.04
     timeout-minutes: 5
