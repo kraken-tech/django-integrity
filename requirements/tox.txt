@@ -16,6 +16,7 @@ packaging==24.0
     # via
     #   pyproject-api
     #   tox
+    #   tox-uv
 platformdirs==4.2.1
     # via
     #   tox
@@ -29,5 +30,9 @@ tomli==2.0.1
     #   pyproject-api
     #   tox
 tox==4.15.0
+    # via tox-uv
+tox-uv==1.8.2
+uv==0.1.42
+    # via tox-uv
 virtualenv==20.26.1
     # via tox
