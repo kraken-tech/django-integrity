@@ -3,6 +3,62 @@
 Django Integrity contains tools for controlling deferred constraints
 and handling `IntegrityError`s in Django projects which use PostgreSQL.
 
+## Deferrable constraints
+
+Some PostgreSQL constraints can be defined as `DEFERRABLE`.
+A constraint that is not deferred will be checked immediately after every command.
+A deferred constraint check will be postponed until the end of the transaction.
+A deferrable constraint will default to either `DEFERRED` or `IMMEDIATE`.
+
+The utilities in `django_integrity.constraints` can
+ensure a deferred constraint is checked immediately,
+or defer an immediate constraint.
+
+These alter the state of constraints until the end of the current transaction:
+
+- `set_all_immediate(using=...)`
+- `set_immedate(names=(...), using=...)`
+- `set_deferred(names=(...), using=...)`
+
+To enforce a constraint immediately within some limited part of a transaction,
+use the `immediate(names=(...), using=...)` context manager.
+
+### Why do we need this?
+
+This is most likely to be useful when you want to catch a foreign-key violation
+(i.e.: you have inserted a row which references different row which doesn't exist).
+
+Django's foreign key constraints are deferred by default,
+so they would normally raise an error only at the end of a transaction.
+Using `try` to catch an `IntegrityError` from a foreign-key violation wouldn't work,
+and you'd need to wrap the `COMMIT` instead, which is trickier.
+
+By making the constraint `IMMEDIATE`,
+the constraint would be checked on `INSERT`,
+and it would be much easier to catch.
+
+More generally,
+if you have a custom deferrable constraint,
+it may be useful to change the default behaviour with these tools.
+
+## Refining `IntegrityError`
+
+The `refine_integrity_error` context manager in `django_integrity.conversion`
+will convert an `IntegrityError` into a more specific exception
+based on a mapping of rules to your custom exceptions,
+and will raise the `IntegrityError` if it doesn't match.
+
+### Why do we need this?
+
+When a database constraint is violated,
+we usually expect to see an `IntegrityError`.
+
+Sometimes we need more information about the error:
+was it a unique constraint violation, or a check-constraint, or a not-null constraint?
+Perhaps we ran out of 32-bit integers for our ID column?
+Failing to be specific on these points could lead to bugs
+where we catch an exception without realising it was not the one we expected.
+
 ## Supported dependencies
 
 This package is tested against:
@@ -11,151 +67,3 @@ This package is tested against:
 - Django 4.1, 4.2, or 5.0.
 - PostgreSQL 12 to 16
 - psycopg2 and psycopg3
-
-## Local development
-
-### Creating a virtual environment
-
-Ensure one of the above Pythons is installed and used by the `python` executable:
-
-```sh
-python --version
-```
-
-Then create and activate a virtual environment. If you don't have any other way of managing virtual
-environments this can be done by running:
-
-```sh
-python -m venv .venv
-source .venv/bin/activate
-```
-
-You could also use [virtualenvwrapper], [direnv] or any similar tool to help manage your virtual
-environments.
-
-### Install PostgreSQL
-
-Ensure that PostgreSQL with minimum version 12 is installed and running on your local machine. 
-
-### Installing Python dependencies
-
-> [!NOTE]
-> You might not need to install the below requirements if you only intend to run the tests,
-> because we use [tox] for the tests, and it manages the installation of dependencies.
-
-If you only intend to run the tests with [tox], then you may only require:
-
-```sh
-pip install tox
-```
-
-Alternatively, to install all the development dependencies in your virtual environment, run:
-
-```sh
-make install
-```
-
-[direnv]: https://direnv.net
-[virtualenvwrapper]: https://virtualenvwrapper.readthedocs.io/
-
-### Testing
-
-To start the tests with [tox], run:
-
-```sh
-make test
-```
-
-Alternatively, if you want to run the tests directly in your virtual environment,
-you many run the tests with:
-
-```sh
-python -m pytest
-```
-
-### Static analysis
-
-Run all static analysis tools with:
-
-```sh
-make lint
-```
-
-This may make changes to the local files if improvements are available.
-
-### Managing dependencies
-
-Package dependencies are declared in `pyproject.toml`.
-
-- _package_ dependencies in the `dependencies` array in the `[project]` section.
-- _development_ dependencies in the `dev` array in the `[project.optional-dependencies]` section.
-
-For local development, the dependencies declared in `pyproject.toml` are pinned to specific
-versions using the `requirements/development.txt` lock file.
-You should not manually edit the `requirements/development.txt` lock file.
-
-Prerequisites for installing those dependencies are tracked in the `requirements/prerequisites.txt`.
-
-
-#### Adding a new dependency
-
-To install a new Python dependency add it to the appropriate section in `pyproject.toml` and then
-run:
-
-```sh
-make install
-```
-
-This will:
-
-1. Build a new version of the `requirements/development.txt` lock file containing the newly added
-   package.
-2. Sync your installed packages with those pinned in `requirements/development.txt`.
-
-This will not change the pinned versions of any packages already in any requirements file unless
-needed by the new packages, even if there are updated versions of those packages available.
-
-Remember to commit your changed `requirements/development.txt` files alongside the changed
-`pyproject.toml`.
-
-#### Removing a dependency
-
-Removing Python dependencies works exactly the same way: edit `pyproject.toml` and then run
-`make install`.
-
-#### Updating all Python packages
-
-To update the pinned versions of all packages run:
-
-```sh
-make update
-```
-
-This will update the pinned versions of every package in the `requirements/development.txt` lock
-file to the latest version which is compatible with the constraints in `pyproject.toml`.
-
-You can then run:
-
-```sh
-make install
-```
-
-to sync your installed packages with the updated versions pinned in `requirements/development.txt`.
-
-#### Updating individual Python packages
-
-Upgrade a single development dependency with:
-
-```sh
-pip-compile -P $PACKAGE==$VERSION pyproject.toml --resolver=backtracking --extra=dev --output-file=requirements/development.txt
-```
-
-You can then run:
-
-```sh
-make install
-```
-
-to sync your installed packages with the updated versions pinned in `requirements/development.txt`.
-
-[tox]: https://tox.wiki
