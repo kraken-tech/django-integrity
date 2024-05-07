@@ -8,7 +8,6 @@ help:
 	@echo "  update: Update dev dependencies"
 	@echo "  test: Run Python tests"
 	@echo "  lint: Run formatters and static analysis checks"
-	@echo "  package: Build a wheel package"
 
 
 # Standard entry points
@@ -28,10 +27,6 @@ lint: format style typing
 .PHONY:update
 update:
 	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=dev --output-file=requirements/development.txt --unsafe-package django
-
-.PHONY:package
-package:
-	pip wheel .
 
 
 # Implementation details
