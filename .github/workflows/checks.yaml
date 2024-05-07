@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  build:
+  lint:
     runs-on: ubuntu-22.04
     timeout-minutes: 3
 
