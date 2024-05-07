@@ -45,6 +45,10 @@ jobs:
             3.11
             3.10
           cache: 'pip'
+          cache-dependency-path: |
+            pyproject.toml
+            requirements/*.txt
+            tox.ini
 
       - name: Install tox
         run: pip install tox
