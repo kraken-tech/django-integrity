@@ -52,7 +52,7 @@ requirements/development.txt: pyproject.toml
 
 .PHONY:format
 format:
-	ruff format .
+	ruff format --check .
 
 .PHONY:style
 style:

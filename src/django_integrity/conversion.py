@@ -8,6 +8,7 @@ from collections.abc import Iterator, Mapping
 
 from django import db as django_db
 
+
 try:
     import psycopg
 except ImportError:
