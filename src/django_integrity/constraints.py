@@ -3,6 +3,7 @@ from collections.abc import Iterator, Sequence
 
 from django import db as django_db
 
+
 try:
     from psycopg import sql
 except ImportError:

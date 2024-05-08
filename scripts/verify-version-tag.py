@@ -6,8 +6,8 @@ This script verifies that the current commit has a tag,
 that the tag matches the version in the `pyproject.toml` file,
 and that the tag is in the CHANGELOG.
 """
+
 import pathlib
-import re
 import subprocess
 import sys
 
