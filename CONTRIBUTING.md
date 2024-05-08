@@ -69,8 +69,6 @@ Run all static analysis tools with:
 make lint
 ```
 
-This may make changes to the local files if improvements are available.
-
 ### Managing dependencies
 
 Package dependencies are declared in `pyproject.toml`.
