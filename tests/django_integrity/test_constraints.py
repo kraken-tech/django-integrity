@@ -41,7 +41,7 @@ class TestForeignKeyConstraintName:
 
 class TestSetAllImmediate:
     @pytest.mark.django_db
-    def test_all_constraints_set(self):
+    def test_all_constraints_set(self) -> None:
         constraints.set_all_immediate(using="default")
 
         with pytest.raises(django_db.IntegrityError):
@@ -50,7 +50,7 @@ class TestSetAllImmediate:
 
     @pytest.mark.django_db
     @pytest.mark.xfail(raises=django_db.IntegrityError)
-    def test_constraint_not_set(self):
+    def test_constraint_not_set(self) -> None:
         # This try block proves that the constraint isn't enforced immediately.
         # It's deferred, so the error is raised in the shutdown phase of the test.
         # We use xfail to catch the error and prevent the test from failing.
@@ -60,7 +60,7 @@ class TestSetAllImmediate:
             pytest.fail("The ForeignKey constraint should be deferred.")
 
     @pytest.mark.django_db(transaction=True)
-    def test_not_in_transaction(self):
+    def test_not_in_transaction(self) -> None:
         # Fail if we're not in a transaction.
         with pytest.raises(constraints.NotInTransaction):
             constraints.set_all_immediate(using="default")
@@ -68,7 +68,7 @@ class TestSetAllImmediate:
 
 class TestSetImmediate:
     @pytest.mark.django_db
-    def test_set(self):
+    def test_set(self) -> None:
         constraint_name = constraints.foreign_key_constraint_name(
             model=test_models.ForeignKeyModel,
             field_name="related_id",
@@ -82,7 +82,7 @@ class TestSetImmediate:
             test_models.ForeignKeyModel.objects.create(related_id=42)
 
     @pytest.mark.django_db
-    def test_not_set(self):
+    def test_not_set(self) -> None:
         # No constraint name is passed, so no constraints should be set to immediate.
         constraints.set_immediate(names=(), using="default")
 
@@ -94,7 +94,7 @@ class TestSetImmediate:
             constraints.set_all_immediate(using="default")
 
     @pytest.mark.django_db(transaction=True)
-    def test_not_in_transaction(self):
+    def test_not_in_transaction(self) -> None:
         # Fail if we're not in a transaction.
         with pytest.raises(constraints.NotInTransaction):
             constraints.set_immediate(names=(), using="default")
@@ -102,7 +102,7 @@ class TestSetImmediate:
 
 class TestSetDeferred:
     @pytest.mark.django_db
-    def test_not_set(self):
+    def test_not_set(self) -> None:
         test_models.UniqueModel.objects.create(unique_field=42)
 
         # We pass no names, so no constraints should be set to deferred.
@@ -114,7 +114,7 @@ class TestSetDeferred:
             test_models.UniqueModel.objects.create(unique_field=42)
 
     @pytest.mark.django_db
-    def test_set(self):
+    def test_set(self) -> None:
         test_models.UniqueModel.objects.create(unique_field=42)
 
         # We defer the constraint...
@@ -129,7 +129,7 @@ class TestSetDeferred:
             constraints.set_all_immediate(using="default")
 
     @pytest.mark.django_db(transaction=True)
-    def test_not_in_transaction(self):
+    def test_not_in_transaction(self) -> None:
         # Fail if we're not in a transaction.
         with pytest.raises(constraints.NotInTransaction):
             constraints.set_deferred(names=(), using="default")
@@ -137,7 +137,7 @@ class TestSetDeferred:
 
 class TestImmediate:
     @pytest.mark.django_db
-    def test_constraint_not_enforced(self):
+    def test_constraint_not_enforced(self) -> None:
         """Constraints are not changed when not explicitly enforced."""
         # Call the context manager without any constraint names.
         with constraints.immediate((), using="default"):
@@ -150,7 +150,7 @@ class TestImmediate:
             constraints.set_all_immediate(using="default")
 
     @pytest.mark.django_db
-    def test_constraint_enforced(self):
+    def test_constraint_enforced(self) -> None:
         """Constraints are enforced when explicitly enforced."""
         constraint_name = constraints.foreign_key_constraint_name(
             model=test_models.ForeignKeyModel,
@@ -173,7 +173,7 @@ class TestImmediate:
         assert context_manager_successfully_entered is True
 
     @pytest.mark.django_db
-    def test_deferral_restored(self):
+    def test_deferral_restored(self) -> None:
         """Constraints are restored to DEFERRED after the context manager."""
         constraint_name = constraints.foreign_key_constraint_name(
             model=test_models.ForeignKeyModel,
@@ -193,7 +193,7 @@ class TestImmediate:
             constraints.set_all_immediate(using="default")
 
     @pytest.mark.django_db(transaction=True)
-    def test_not_in_transaction(self):
+    def test_not_in_transaction(self) -> None:
         # Fail if we're not in a transaction.
         with pytest.raises(constraints.NotInTransaction):
             with constraints.immediate((), using="default"):
