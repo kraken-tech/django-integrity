@@ -79,6 +79,7 @@ dev = [
     "pytest",
     "pytest-django",
     "tox",
+    "types-psycopg2",
 
     # Linting
     "mypy",

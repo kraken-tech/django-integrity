@@ -4,13 +4,11 @@
   },
   "src/django_integrity/constraints.py": {
     "Cannot find implementation or library stub for module named \"psycopg\"  [import-not-found]": 1,
-    "Library stubs not installed for \"psycopg2\"  [import-untyped]": 1,
     "Module has no attribute \"transaction\"  [attr-defined]": 4
   },
   "src/django_integrity/conversion.py": {
     "Cannot find implementation or library stub for module named \"psycopg\"  [import-not-found]": 1,
     "Function is missing a return type annotation  [no-untyped-def]": 1,
-    "Library stubs not installed for \"psycopg2\"  [import-untyped]": 1,
     "Returning Any from function declared to return \"bool\"  [no-any-return]": 2
   },
   "tests/django_integrity/test_conversion.py": {
