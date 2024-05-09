@@ -27,17 +27,7 @@ Ensure that a supported version of PostgreSQL (see README) is installed and runn
 
 ### Installing Python dependencies
 
-> [!NOTE]
-> You might not need to install the below requirements if you only intend to run the tests,
-> because we use [tox] for the tests, and it manages the installation of dependencies.
-
-If you only intend to run the tests with [tox], then you may only require:
-
-```sh
-pip install tox
-```
-
-Alternatively, to install all the development dependencies in your virtual environment, run:
+To install all the development dependencies in your virtual environment, run:
 
 ```sh
 make install
@@ -58,7 +48,7 @@ Alternatively, if you want to run the tests directly in your virtual environment
 you many run the tests with:
 
 ```sh
-python3 -m pytest
+PYTHONPATH=src python3 -m pytest
 ```
 
 ### Static analysis
