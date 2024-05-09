@@ -22,7 +22,8 @@ test:
 	./scripts/type-ratchet.py check
 
 .PHONY:lint
-lint: format style typing
+lint:
+	pre-commit run --all-files
 
 .PHONY:update
 update:
