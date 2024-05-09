@@ -49,6 +49,18 @@ repository = "https://github.com/octoenergy/django-integrity"
 changelog = "https://github.com/octoenergy/django-integrity/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
+# None of these extras are recommended for normal installation.
+# We use combinations of these groups in development and testing environments.
+pytest-in-tox = [
+    # We deliberately exclude Django and Psycopg from this list because
+    # this groups is used for running the pytest tests with tox,
+    # and those packages are a part of tox's test matrix.
+    "dj-database-url",
+    "django-stubs",
+    "environs",
+    "pytest",
+    "pytest-django",
+]
 dev = [
     # Testing
     "dj-database-url",

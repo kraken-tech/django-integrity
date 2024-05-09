@@ -27,6 +27,7 @@ lint: format style typing
 .PHONY:update
 update:
 	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=dev --output-file=requirements/development.txt --unsafe-package django
+	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=pytest-in-tox --output-file=requirements/pytest-in-tox.txt --unsafe-package django
 
 
 # Implementation details
