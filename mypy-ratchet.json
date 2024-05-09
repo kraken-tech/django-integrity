@@ -3,13 +3,13 @@
     "Function is missing a return type annotation  [no-untyped-def]": 1
   },
   "src/django_integrity/constraints.py": {
-    "Cannot find implementation or library stub for module named \"psycopg\"  [import-not-found]": 1,
-    "Module has no attribute \"transaction\"  [attr-defined]": 4
+    "Module has no attribute \"transaction\"  [attr-defined]": 4,
+    "Name \"sql\" already defined (by an import)  [no-redef]": 1
   },
   "src/django_integrity/conversion.py": {
-    "Cannot find implementation or library stub for module named \"psycopg\"  [import-not-found]": 1,
+    "Argument 1 to \"match\" of \"Pattern\" has incompatible type \"str | None\"; expected \"str\"  [arg-type]": 3,
     "Function is missing a return type annotation  [no-untyped-def]": 1,
-    "Returning Any from function declared to return \"bool\"  [no-any-return]": 2
+    "Name \"psycopg\" already defined (by an import)  [no-redef]": 1
   },
   "tests/django_integrity/test_conversion.py": {
     "Argument \"fields\" to \"Unique\" has incompatible type \"tuple[str, str]\"; expected \"tuple[str]\"  [arg-type]": 1,
