@@ -160,7 +160,7 @@ class NotInTransaction(Exception):
 
 
 def foreign_key_constraint_name(
-    model: django_db.models.Model, field_name: str, *, using: str
+    model: type[django_db.models.Model], field_name: str, *, using: str
 ) -> str:
     """
     Calculate FK constraint name for a model's field.

@@ -74,7 +74,7 @@ class Unique(_Rule):
     A unique constraint defined by a model and a set of fields.
     """
 
-    model: django_db.models.Model
+    model: type[django_db.models.Model]
     fields: tuple[str]
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
@@ -102,7 +102,7 @@ class PrimaryKey(_Rule):
     trying to create a PrimaryKey rule.
     """
 
-    model: django_db.models.Model
+    model: type[django_db.models.Model]
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
@@ -149,7 +149,7 @@ class NotNull(_Rule):
     A not-null constraint on a Model's field.
     """
 
-    model: django_db.models.Model
+    model: type[django_db.models.Model]
     field: str
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
@@ -168,7 +168,7 @@ class ForeignKey(_Rule):
     A foreign key constraint on a Model's field.
     """
 
-    model: django_db.models.Model
+    model: type[django_db.models.Model]
     field: str
 
     _detail_pattern = re.compile(
