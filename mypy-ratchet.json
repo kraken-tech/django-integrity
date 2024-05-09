@@ -1,7 +1,4 @@
 {
-  "scripts/verify-version-tag.py": {
-    "Function is missing a return type annotation  [no-untyped-def]": 1
-  },
   "src/django_integrity/constraints.py": {
     "Module has no attribute \"transaction\"  [attr-defined]": 4
   },
