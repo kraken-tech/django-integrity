@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased changes
 
+## v0.1.1 - 2024-05-09
+
 - Fix some incorrect type signatures.
   We were mistakenly asking for `django.db.models.Model` instead of `type[django.db.models.Model]` in:
     - `django_integrity.constraints.foreign_key_constraint_name`
