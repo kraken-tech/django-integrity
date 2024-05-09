@@ -83,7 +83,7 @@ class Unique(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
-        match = self._pattern.match(error.__cause__.diag.message_detail)
+        match = self._pattern.match(error.__cause__.diag.message_detail or "")
         if match is None:
             return False
 
@@ -122,7 +122,7 @@ class PrimaryKey(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
-        match = self._pattern.match(error.__cause__.diag.message_detail)
+        match = self._pattern.match(error.__cause__.diag.message_detail or "")
         if match is None:
             return False
 
@@ -179,7 +179,9 @@ class ForeignKey(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.ForeignKeyViolation):
             return False
 
-        detail_match = self._detail_pattern.match(error.__cause__.diag.message_detail)
+        detail_match = self._detail_pattern.match(
+            error.__cause__.diag.message_detail or ""
+        )
         if detail_match is None:
             return False
 

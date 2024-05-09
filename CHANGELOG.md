@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 - Fix some more incorrect type signatures:
     - `django_integrity.conversion.Unique.fields` was erroneously `tuple[str]` instead of `tuple[str, ...]`.
+- Protect against previously-unhandled potential `None` in errors from Psycopg.
 
 ## v0.1.1 - 2024-05-09
 
