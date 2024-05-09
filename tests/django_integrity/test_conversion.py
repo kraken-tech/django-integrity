@@ -90,7 +90,11 @@ class TestUnique:
         ),
         ids=("wrong_model", "wrong_field"),
     )
-    def test_rules_mismatch(self, Model: conversion.Unique, field: str) -> None:
+    def test_rules_mismatch(
+        self,
+        Model: type[test_models.AlternativeUniqueModel | test_models.UniqueModel],
+        field: str,
+    ) -> None:
         # A rule that matches a similar looking, but different, unique constraint.
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
