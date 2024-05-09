@@ -86,7 +86,6 @@ dev = [
     "mypy",
     "mypy-json-report",
     "pre-commit",
-    "ruff",
 
     # CLI utils
     "rich",
