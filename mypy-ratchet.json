@@ -1,9 +1,1 @@
-{
-  "tests/django_integrity/test_conversion.py": {
-    "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[ForeignKey, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3,
-    "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[Named, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 2,
-    "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[NotNull, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3,
-    "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[PrimaryKey, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 2,
-    "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[Unique, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3
-  }
-}
+{}

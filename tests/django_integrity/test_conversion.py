@@ -12,7 +12,7 @@ class SimpleError(Exception):
 class TestRefineIntegrityError:
     def test_no_rules(self) -> None:
         # It is legal to call the context manager without any rules.
-        with conversion.refine_integrity_error(rules={}):
+        with conversion.refine_integrity_error(rules=()):
             pass
 
 
@@ -22,7 +22,7 @@ class TestNamedConstraint:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
-        rules = {conversion.Named(name="unique_model_unique_field_key"): SimpleError}
+        rules = ((conversion.Named(name="unique_model_unique_field_key"), SimpleError),)
 
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
@@ -34,7 +34,7 @@ class TestNamedConstraint:
         test_models.UniqueModel.objects.create(unique_field=42)
 
         # No constraints match the error:
-        rules = {conversion.Named(name="nonexistent_constraint"): SimpleError}
+        rules = ((conversion.Named(name="nonexistent_constraint"), SimpleError),)
 
         # The original error should be raised.
         with pytest.raises(django_db.IntegrityError):
@@ -48,11 +48,14 @@ class TestUnique:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
-        rules = {
-            conversion.Unique(
-                model=test_models.UniqueModel, fields=("unique_field",)
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.Unique(
+                    model=test_models.UniqueModel, fields=("unique_field",)
+                ),
+                SimpleError,
+            ),
+        )
 
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
@@ -63,11 +66,14 @@ class TestUnique:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueTogetherModel.objects.create(field_1=1, field_2=2)
 
-        rules = {
-            conversion.Unique(
-                model=test_models.UniqueTogetherModel, fields=("field_1", "field_2")
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.Unique(
+                    model=test_models.UniqueTogetherModel, fields=("field_1", "field_2")
+                ),
+                SimpleError,
+            ),
+        )
 
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
@@ -99,7 +105,7 @@ class TestUnique:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
-        rules = {conversion.Unique(model=Model, fields=(field,)): SimpleError}
+        rules = ((conversion.Unique(model=Model, fields=(field,)), SimpleError),)
 
         # We shouldn't transform the error, because it didn't match the rule.
         with pytest.raises(django_db.IntegrityError):
@@ -132,7 +138,7 @@ class TestPrimaryKey:
         # Create a unique instance so that we can violate the constraint later.
         existing_primary_key = ModelClass.objects.create().pk
 
-        rules = {conversion.PrimaryKey(model=ModelClass): SimpleError}
+        rules = ((conversion.PrimaryKey(model=ModelClass), SimpleError),)
 
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
@@ -144,7 +150,7 @@ class TestPrimaryKey:
         existing_primary_key = test_models.PrimaryKeyModel.objects.create().pk
 
         # A similar rule, but for a different model with the same field name..
-        rules = {conversion.PrimaryKey(model=test_models.UniqueModel): SimpleError}
+        rules = ((conversion.PrimaryKey(model=test_models.UniqueModel), SimpleError),)
 
         # The original error should be raised.
         with pytest.raises(django_db.IntegrityError):
@@ -165,11 +171,12 @@ class TestPrimaryKey:
 @pytest.mark.django_db
 class TestNotNull:
     def test_error_refined(self) -> None:
-        rules = {
-            conversion.NotNull(
-                model=test_models.UniqueModel, field="unique_field"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.NotNull(model=test_models.UniqueModel, field="unique_field"),
+                SimpleError,
+            ),
+        )
 
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
@@ -179,11 +186,14 @@ class TestNotNull:
 
     def test_model_mismatch(self) -> None:
         # Same field, but different model.
-        rules = {
-            conversion.NotNull(
-                model=test_models.AlternativeUniqueModel, field="unique_field"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.NotNull(
+                    model=test_models.AlternativeUniqueModel, field="unique_field"
+                ),
+                SimpleError,
+            ),
+        )
 
         with pytest.raises(django_db.IntegrityError):
             with conversion.refine_integrity_error(rules):
@@ -192,11 +202,14 @@ class TestNotNull:
 
     def test_field_mismatch(self) -> None:
         # Same model, but different field.
-        rules = {
-            conversion.NotNull(
-                model=test_models.AlternativeUniqueModel, field="unique_field_2"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.NotNull(
+                    model=test_models.AlternativeUniqueModel, field="unique_field_2"
+                ),
+                SimpleError,
+            ),
+        )
 
         # The original error should be raised.
         with pytest.raises(django_db.IntegrityError):
@@ -211,11 +224,14 @@ class TestNotNull:
 @pytest.mark.django_db
 class TestForeignKey:
     def test_error_refined(self) -> None:
-        rules = {
-            conversion.ForeignKey(
-                model=test_models.ForeignKeyModel, field="related_id"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.ForeignKey(
+                    model=test_models.ForeignKeyModel, field="related_id"
+                ),
+                SimpleError,
+            ),
+        )
         constraints.set_all_immediate(using="default")
 
         # The original error should be transformed into our expected error.
@@ -226,11 +242,14 @@ class TestForeignKey:
 
     def test_source_mismatch(self) -> None:
         # The field name matches, but the source model is different.
-        rules = {
-            conversion.ForeignKey(
-                model=test_models.ForeignKeyModel2, field="related_id"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.ForeignKey(
+                    model=test_models.ForeignKeyModel2, field="related_id"
+                ),
+                SimpleError,
+            ),
+        )
         constraints.set_all_immediate(using="default")
 
         with pytest.raises(django_db.IntegrityError):
@@ -239,11 +258,14 @@ class TestForeignKey:
 
     def test_field_mismatch(self) -> None:
         # The source model matches, but the field name is different.
-        rules = {
-            conversion.ForeignKey(
-                model=test_models.ForeignKeyModel3, field="related_2_id"
-            ): SimpleError
-        }
+        rules = (
+            (
+                conversion.ForeignKey(
+                    model=test_models.ForeignKeyModel3, field="related_2_id"
+                ),
+                SimpleError,
+            ),
+        )
         constraints.set_all_immediate(using="default")
 
         with pytest.raises(django_db.IntegrityError):
