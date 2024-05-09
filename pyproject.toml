@@ -76,9 +76,11 @@ dev = [
     "django-stubs",
     "environs",
     "psycopg2-binary",
+    "psycopg[binary]",
     "pytest",
     "pytest-django",
     "tox",
+    "types-psycopg2",
 
     # Linting
     "mypy",

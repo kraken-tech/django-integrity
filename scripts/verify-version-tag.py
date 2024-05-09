@@ -29,7 +29,7 @@ app = typer.Typer()
 
 
 @app.command()
-def main():
+def main() -> None:
     # Get the tags on the current commit.
     tags = (
         subprocess.check_output(["git", "tag", "--points-at", "HEAD"]).decode().split()

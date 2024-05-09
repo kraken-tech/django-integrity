@@ -4,7 +4,7 @@ import abc
 import contextlib
 import dataclasses
 import re
-from collections.abc import Iterator, Mapping
+from collections.abc import Iterator, Sequence
 
 from django import db as django_db
 
@@ -12,27 +12,30 @@ from django import db as django_db
 try:
     import psycopg
 except ImportError:
-    import psycopg2 as psycopg
+    import psycopg2 as psycopg  # type: ignore[no-redef]
 
 
 @contextlib.contextmanager
-def refine_integrity_error(rules: Mapping[_Rule, Exception]) -> Iterator[None]:
+def refine_integrity_error(
+    rules: Sequence[tuple[_Rule, Exception | type[Exception]]],
+) -> Iterator[None]:
     """
     Convert a generic IntegrityError into a more specific exception.
 
-    The conversion is based on a mapping of rules to exceptions.
+    The conversion is based on (rule, exception) pairs.
 
     Args:
-        rules: A mapping of rules to the exceptions we'll raise if they match.
+        rules: A sequence of rule, exception pairs.
+            If the rule matches the IntegrityError, the exception is raised.
 
     Raises:
-        An error from the rules mapping if an IntegrityError matches a rule.
+        The exception paired with the first matching rule.
         Otherwise, the original IntegrityError.
     """
     try:
         yield
     except django_db.IntegrityError as e:
-        for rule, refined_error in rules.items():
+        for rule, refined_error in rules:
             if rule.is_match(e):
                 raise refined_error from e
         raise
@@ -75,7 +78,7 @@ class Unique(_Rule):
     """
 
     model: type[django_db.models.Model]
-    fields: tuple[str]
+    fields: tuple[str, ...]
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
@@ -83,7 +86,7 @@ class Unique(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
-        match = self._pattern.match(error.__cause__.diag.message_detail)
+        match = self._pattern.match(error.__cause__.diag.message_detail or "")
         if match is None:
             return False
 
@@ -106,7 +109,7 @@ class PrimaryKey(_Rule):
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """
         Ensure the model has a primary key.
 
@@ -122,7 +125,7 @@ class PrimaryKey(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.UniqueViolation):
             return False
 
-        match = self._pattern.match(error.__cause__.diag.message_detail)
+        match = self._pattern.match(error.__cause__.diag.message_detail or "")
         if match is None:
             return False
 
@@ -179,7 +182,9 @@ class ForeignKey(_Rule):
         if not isinstance(error.__cause__, psycopg.errors.ForeignKeyViolation):
             return False
 
-        detail_match = self._detail_pattern.match(error.__cause__.diag.message_detail)
+        detail_match = self._detail_pattern.match(
+            error.__cause__.diag.message_detail or ""
+        )
         if detail_match is None:
             return False
 

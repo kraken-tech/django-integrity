@@ -66,6 +66,10 @@ pluggy==1.5.0
     # via
     #   pytest
     #   tox
+psycopg==3.1.18
+    # via django_integrity (pyproject.toml)
+psycopg-binary==3.1.18
+    # via psycopg
 psycopg2-binary==2.9.9
     # via django_integrity (pyproject.toml)
 pygments==2.18.0
@@ -102,6 +106,8 @@ tox==4.15.0
     # via django_integrity (pyproject.toml)
 typer==0.12.3
     # via django_integrity (pyproject.toml)
+types-psycopg2==2.9.21.20240417
+    # via django_integrity (pyproject.toml)
 types-pyyaml==6.0.12.20240311
     # via django-stubs
 typing-extensions==4.11.0
@@ -111,6 +117,7 @@ typing-extensions==4.11.0
     #   django-stubs
     #   django-stubs-ext
     #   mypy
+    #   psycopg
     #   typer
 virtualenv==20.26.1
     # via tox

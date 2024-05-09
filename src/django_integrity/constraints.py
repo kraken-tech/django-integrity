@@ -1,13 +1,13 @@
 import contextlib
 from collections.abc import Iterator, Sequence
 
-from django import db as django_db
+from django.db import connections, models, transaction
 
 
 try:
     from psycopg import sql
 except ImportError:
-    from psycopg2 import sql
+    from psycopg2 import sql  # type: ignore[no-redef]
 
 
 # Note [Deferrable constraints]
@@ -69,7 +69,7 @@ def immediate(names: Sequence[str], *, using: str) -> Iterator[None]:
     """
     set_immediate(names, using=using)
     try:
-        with django_db.transaction.atomic(using=using):
+        with transaction.atomic(using=using):
             yield
     finally:
         set_deferred(names, using=using)
@@ -87,10 +87,10 @@ def set_all_immediate(*, using: str) -> None:
     Raises:
         NotInTransaction: When we try to change constraints outside of a transaction.
     """
-    if django_db.transaction.get_autocommit(using):
+    if transaction.get_autocommit(using):
         raise NotInTransaction
 
-    with django_db.connections[using].cursor() as cursor:
+    with connections[using].cursor() as cursor:
         cursor.execute("SET CONSTRAINTS ALL IMMEDIATE")
 
 
@@ -107,7 +107,7 @@ def set_immediate(names: Sequence[str], *, using: str) -> None:
     Raises:
         NotInTransaction: When we try to change constraints outside of a transaction.
     """
-    if django_db.transaction.get_autocommit(using):
+    if transaction.get_autocommit(using):
         raise NotInTransaction
 
     if not names:
@@ -117,7 +117,7 @@ def set_immediate(names: Sequence[str], *, using: str) -> None:
         names=sql.SQL(", ").join(sql.Identifier(name) for name in names)
     )
 
-    with django_db.connections[using].cursor() as cursor:
+    with connections[using].cursor() as cursor:
         cursor.execute(query)
 
 
@@ -134,7 +134,7 @@ def set_deferred(names: Sequence[str], *, using: str) -> None:
     Raises:
         NotInTransaction: When we try to change constraints outside of a transaction.
     """
-    if django_db.transaction.get_autocommit(using):
+    if transaction.get_autocommit(using):
         raise NotInTransaction
 
     if not names:
@@ -144,7 +144,7 @@ def set_deferred(names: Sequence[str], *, using: str) -> None:
         names=sql.SQL(", ").join(sql.Identifier(name) for name in names)
     )
 
-    with django_db.connections[using].cursor() as cursor:
+    with connections[using].cursor() as cursor:
         cursor.execute(query)
 
 
@@ -160,7 +160,7 @@ class NotInTransaction(Exception):
 
 
 def foreign_key_constraint_name(
-    model: type[django_db.models.Model], field_name: str, *, using: str
+    model: type[models.Model], field_name: str, *, using: str
 ) -> str:
     """
     Calculate FK constraint name for a model's field.
@@ -195,7 +195,7 @@ def foreign_key_constraint_name(
     to_field = remote_field.name
     suffix = f"_fk_{to_table}_{to_field}"
 
-    connection = django_db.connections[using]
+    connection = connections[using]
     with connection.schema_editor() as editor:
         # The _fk_constraint_name method is not part of the public API,
         # and only exists on the PostgreSQL schema editor.
