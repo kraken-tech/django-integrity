@@ -174,7 +174,8 @@ class TestNotNull:
         # The original error should be transformed into our expected error.
         with pytest.raises(SimpleError):
             with conversion.refine_integrity_error(rules):
-                test_models.UniqueModel.objects.create(unique_field=None)
+                # We ignore the type error because it's picking up on the error we're testing.
+                test_models.UniqueModel.objects.create(unique_field=None)  # type: ignore[misc]
 
     def test_model_mismatch(self) -> None:
         # Same field, but different model.
@@ -186,7 +187,8 @@ class TestNotNull:
 
         with pytest.raises(django_db.IntegrityError):
             with conversion.refine_integrity_error(rules):
-                test_models.UniqueModel.objects.create(unique_field=None)
+                # We ignore the type error because it's picking up on the error we're testing.
+                test_models.UniqueModel.objects.create(unique_field=None)  # type: ignore[misc]
 
     def test_field_mismatch(self) -> None:
         # Same model, but different field.
@@ -200,7 +202,8 @@ class TestNotNull:
         with pytest.raises(django_db.IntegrityError):
             with conversion.refine_integrity_error(rules):
                 test_models.AlternativeUniqueModel.objects.create(
-                    unique_field=None,
+                    # We ignore the type error because it's picking up on the error we're testing.
+                    unique_field=None,  # type: ignore[misc]
                     unique_field_2=42,
                 )
 
