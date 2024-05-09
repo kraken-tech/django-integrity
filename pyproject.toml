@@ -72,8 +72,10 @@ tox = [
 dev = [
     # Testing
     "dj-database-url",
+    "django",
     "django-stubs",
     "environs",
+    "psycopg2-binary",
     "pytest",
     "pytest-django",
     "tox",
