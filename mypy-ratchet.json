@@ -1,7 +1,4 @@
 {
-  "src/django_integrity/constraints.py": {
-    "Module has no attribute \"transaction\"  [attr-defined]": 4
-  },
   "src/django_integrity/conversion.py": {
     "Argument 1 to \"match\" of \"Pattern\" has incompatible type \"str | None\"; expected \"str\"  [arg-type]": 3,
     "Function is missing a return type annotation  [no-untyped-def]": 1
