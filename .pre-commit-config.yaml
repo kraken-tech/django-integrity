@@ -1,0 +1,16 @@
+default_stages: [pre-commit]
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.4.3
+    hooks:
+      - id: ruff
+        args: [--fix, --show-fixes]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        types_or: [python, pyi]
+        pass_filenames: false
+        language: system
+        entry: ./scripts/type-ratchet.py update

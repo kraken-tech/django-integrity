@@ -14,7 +14,7 @@ help:
 # =====================
 
 .PHONY:install
-install: install_python_packages
+install: install_python_packages install_pre_commit
 
 .PHONY:test
 test:
@@ -56,6 +56,10 @@ install_python_packages: install_prerequisites requirements/development.txt
 .PHONY:install_prerequisites
 install_prerequisites: requirements/prerequisites.txt
 	pip install --quiet --requirement requirements/prerequisites.txt
+
+.PHONY:install_pre_commit
+install_pre_commit:
+	pre-commit install
 
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
