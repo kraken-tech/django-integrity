@@ -61,6 +61,11 @@ pytest-in-tox = [
     "pytest",
     "pytest-django",
 ]
+release = [
+    "rich",
+    "tomli >= 1.1.0 ; python_version < '3.11'",
+    "typer",
+]
 dev = [
     # Testing
     "dj-database-url",
