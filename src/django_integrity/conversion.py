@@ -106,7 +106,7 @@ class PrimaryKey(_Rule):
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         """
         Ensure the model has a primary key.
 

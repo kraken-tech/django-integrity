@@ -1,7 +1,6 @@
 {
   "src/django_integrity/conversion.py": {
-    "Argument 1 to \"match\" of \"Pattern\" has incompatible type \"str | None\"; expected \"str\"  [arg-type]": 3,
-    "Function is missing a return type annotation  [no-untyped-def]": 1
+    "Argument 1 to \"match\" of \"Pattern\" has incompatible type \"str | None\"; expected \"str\"  [arg-type]": 3
   },
   "tests/django_integrity/test_conversion.py": {
     "Argument \"fields\" to \"Unique\" has incompatible type \"tuple[str, str]\"; expected \"tuple[str]\"  [arg-type]": 1,
