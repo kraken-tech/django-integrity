@@ -26,10 +26,23 @@ lint: format style typing
 
 .PHONY:update
 update:
-	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=dev --output-file=requirements/development.txt
-	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=pytest-in-tox --output-file=requirements/pytest-in-tox.txt --unsafe-package django
-	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=release --output-file=requirements/release.txt
-	pip-compile pyproject.toml --quiet --upgrade --resolver=backtracking --extra=tox --output-file=requirements/tox.txt
+	pip-compile pyproject.toml \
+		--quiet --upgrade --resolver=backtracking \
+		--extra=dev \
+		--output-file=requirements/development.txt
+	pip-compile pyproject.toml \
+		--quiet --upgrade --resolver=backtracking \
+		--extra=pytest-in-tox \
+		--output-file=requirements/pytest-in-tox.txt \
+		--unsafe-package django
+	pip-compile pyproject.toml \
+		--quiet --upgrade --resolver=backtracking \
+		--extra=release \
+		--output-file=requirements/release.txt
+	pip-compile pyproject.toml \
+		--quiet --upgrade --resolver=backtracking \
+		--extra=tox \
+		--output-file=requirements/tox.txt
 
 
 # Implementation details
@@ -46,7 +59,10 @@ install_prerequisites: requirements/prerequisites.txt
 
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
-	pip-compile pyproject.toml --quiet --resolver=backtracking --extra=dev --output-file=requirements/development.txt
+	pip-compile pyproject.toml \
+		--quiet --resolver=backtracking \
+		--extra=dev \
+		--output-file=requirements/development.txt
 
 .PHONY:format
 format:
