@@ -3,7 +3,6 @@
     "Argument 1 to \"match\" of \"Pattern\" has incompatible type \"str | None\"; expected \"str\"  [arg-type]": 3
   },
   "tests/django_integrity/test_conversion.py": {
-    "Argument \"fields\" to \"Unique\" has incompatible type \"tuple[str, str]\"; expected \"tuple[str]\"  [arg-type]": 1,
     "Argument \"model\" to \"Unique\" has incompatible type \"Unique\"; expected \"type[Model]\"  [arg-type]": 1,
     "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[ForeignKey, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3,
     "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[Named, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 2,

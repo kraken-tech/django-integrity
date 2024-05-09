@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased changes
 
+- Fix some more incorrect type signatures:
+    - `django_integrity.conversion.Unique.fields` was erroneously `tuple[str]` instead of `tuple[str, ...]`.
+
 ## v0.1.1 - 2024-05-09
 
 - Fix some incorrect type signatures.

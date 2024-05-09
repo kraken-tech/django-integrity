@@ -75,7 +75,7 @@ class Unique(_Rule):
     """
 
     model: type[django_db.models.Model]
-    fields: tuple[str]
+    fields: tuple[str, ...]
 
     _pattern = re.compile(r"Key \((?P<fields>.+)\)=\(.*\) already exists.")
 
