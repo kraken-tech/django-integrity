@@ -33,9 +33,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: 'pip'
+          cache-dependency-path: |
+            pyproject.toml
+            requirements/*.txt
+            tox.ini
 
       - name: Install requirements
-        run: make install
+        run: pip install --requirement requirements/release.txt
 
       - name: Verify version
         run: ./scripts/verify-version-tag.py

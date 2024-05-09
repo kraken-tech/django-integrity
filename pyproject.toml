@@ -49,11 +49,33 @@ repository = "https://github.com/kraken-tech/django-integrity"
 changelog = "https://github.com/kraken-tech/django-integrity/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
-dev = [
-    # Testing
+# None of these extras are recommended for normal installation.
+# We use combinations of these groups in development and testing environments.
+pytest-in-tox = [
+    # We deliberately exclude Django and Psycopg from this list because
+    # this groups is used for running the pytest tests with tox,
+    # and those packages are a part of tox's test matrix.
     "dj-database-url",
     "django-stubs",
     "environs",
+    "pytest",
+    "pytest-django",
+]
+release = [
+    "rich",
+    "tomli >= 1.1.0 ; python_version < '3.11'",
+    "typer",
+]
+tox = [
+    "tox",
+]
+dev = [
+    # Testing
+    "dj-database-url",
+    "django",
+    "django-stubs",
+    "environs",
+    "psycopg2-binary",
     "pytest",
     "pytest-django",
     "tox",
