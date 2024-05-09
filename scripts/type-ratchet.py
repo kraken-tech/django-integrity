@@ -12,6 +12,7 @@ There are three commands:
 """
 
 import pathlib
+import re
 import subprocess
 import sys
 from collections.abc import Sequence
@@ -125,16 +126,24 @@ def get_mypy_output(cwd: str) -> str:
         text=True,
         cwd=cwd,
     )
+
     # Mypy returns 0 if no errors are found, 1 if errors are found, and 2 if it crashes.
-    # Checking against 0 and 1 instead of 2 proofs us against mypy adding new exit codes.
-    if result.returncode not in {0, 1}:
-        rich.print("[bold red]Mypy crashed.")
-        rich.print("[bold red]STDERR:")
-        print(result.stderr)
-        rich.print("[bold red]STDOUT:")
-        print(result.stdout)
-        sys.exit(result.returncode)
-    return result.stdout
+    # Unfortunately, crashes in plugins can also cause mypy to return 1,
+    # so we need to check the last line of the output for a specific message.
+
+    if result.returncode == 0:
+        return result.stdout
+    last_line = result.stdout.strip().splitlines()[-1]
+    if result.returncode == 1 and re.match(r"Found \d+ errors?", last_line):
+        return result.stdout
+
+    # If we get here, it means that mypy crashed.
+    rich.print("[bold red]Mypy crashed.")
+    rich.print("[bold red]STDERR:")
+    print(result.stderr)
+    rich.print("[bold red]STDOUT:")
+    print(result.stdout)
+    sys.exit(result.returncode)
 
 
 def run_type_ratchet(
