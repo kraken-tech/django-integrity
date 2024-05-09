@@ -24,8 +24,6 @@
     "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[NotNull, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3,
     "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[PrimaryKey, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 2,
     "Argument 1 to \"refine_integrity_error\" has incompatible type \"dict[Unique, type[SimpleError]]\"; expected \"Mapping[_Rule, Exception]\"  [arg-type]": 3,
-    "Function is missing a return type annotation  [no-untyped-def]": 14,
-    "Function is missing a type annotation  [no-untyped-def]": 1,
     "Incompatible type for \"unique_field\" of \"AlternativeUniqueModel\" (got \"None\", expected \"float | int | str | Combinable\")  [misc]": 1,
     "Incompatible type for \"unique_field\" of \"UniqueModel\" (got \"None\", expected \"float | int | str | Combinable\")  [misc]": 2
   }

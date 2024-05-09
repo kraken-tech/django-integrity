@@ -10,7 +10,7 @@ class SimpleError(Exception):
 
 
 class TestRefineIntegrityError:
-    def test_no_rules(self):
+    def test_no_rules(self) -> None:
         # It is legal to call the context manager without any rules.
         with conversion.refine_integrity_error(rules={}):
             pass
@@ -18,7 +18,7 @@ class TestRefineIntegrityError:
 
 @pytest.mark.django_db
 class TestNamedConstraint:
-    def test_error_refined(self):
+    def test_error_refined(self) -> None:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
@@ -29,7 +29,7 @@ class TestNamedConstraint:
             with conversion.refine_integrity_error(rules):
                 test_models.UniqueModel.objects.create(unique_field=42)
 
-    def test_rules_mismatch(self):
+    def test_rules_mismatch(self) -> None:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
@@ -44,7 +44,7 @@ class TestNamedConstraint:
 
 @pytest.mark.django_db
 class TestUnique:
-    def test_error_refined(self):
+    def test_error_refined(self) -> None:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
 
@@ -59,7 +59,7 @@ class TestUnique:
             with conversion.refine_integrity_error(rules):
                 test_models.UniqueModel.objects.create(unique_field=42)
 
-    def test_multiple_fields(self):
+    def test_multiple_fields(self) -> None:
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueTogetherModel.objects.create(field_1=1, field_2=2)
 
@@ -90,7 +90,7 @@ class TestUnique:
         ),
         ids=("wrong_model", "wrong_field"),
     )
-    def test_rules_mismatch(self, Model: conversion.Unique, field: str):
+    def test_rules_mismatch(self, Model: conversion.Unique, field: str) -> None:
         # A rule that matches a similar looking, but different, unique constraint.
         # Create a unique instance so that we can violate the constraint later.
         test_models.UniqueModel.objects.create(unique_field=42)
@@ -112,7 +112,11 @@ class TestPrimaryKey:
             test_models.AlternativePrimaryKeyModel,
         ),
     )
-    def test_error_refined(self, ModelClass):
+    def test_error_refined(
+        self,
+        ModelClass: type[test_models.PrimaryKeyModel]
+        | type[test_models.AlternativePrimaryKeyModel],
+    ) -> None:
         """
         The primary key of a model is extracted from the model.
 
@@ -131,7 +135,7 @@ class TestPrimaryKey:
             with conversion.refine_integrity_error(rules):
                 ModelClass.objects.create(pk=existing_primary_key)
 
-    def test_rules_mismatch(self):
+    def test_rules_mismatch(self) -> None:
         # Create a unique instance so that we can violate the constraint later.
         existing_primary_key = test_models.PrimaryKeyModel.objects.create().pk
 
@@ -143,7 +147,7 @@ class TestPrimaryKey:
             with conversion.refine_integrity_error(rules):
                 test_models.PrimaryKeyModel.objects.create(pk=existing_primary_key)
 
-    def test_model_without_primary_key(self):
+    def test_model_without_primary_key(self) -> None:
         """
         We cannot create a PrimaryKey rule for a model without a primary key.
         """
@@ -156,7 +160,7 @@ class TestPrimaryKey:
 
 @pytest.mark.django_db
 class TestNotNull:
-    def test_error_refined(self):
+    def test_error_refined(self) -> None:
         rules = {
             conversion.NotNull(
                 model=test_models.UniqueModel, field="unique_field"
@@ -168,7 +172,7 @@ class TestNotNull:
             with conversion.refine_integrity_error(rules):
                 test_models.UniqueModel.objects.create(unique_field=None)
 
-    def test_model_mismatch(self):
+    def test_model_mismatch(self) -> None:
         # Same field, but different model.
         rules = {
             conversion.NotNull(
@@ -180,7 +184,7 @@ class TestNotNull:
             with conversion.refine_integrity_error(rules):
                 test_models.UniqueModel.objects.create(unique_field=None)
 
-    def test_field_mismatch(self):
+    def test_field_mismatch(self) -> None:
         # Same model, but different field.
         rules = {
             conversion.NotNull(
@@ -199,7 +203,7 @@ class TestNotNull:
 
 @pytest.mark.django_db
 class TestForeignKey:
-    def test_error_refined(self):
+    def test_error_refined(self) -> None:
         rules = {
             conversion.ForeignKey(
                 model=test_models.ForeignKeyModel, field="related_id"
@@ -213,7 +217,7 @@ class TestForeignKey:
                 # Create a ForeignKeyModel with a related_id that doesn't exist.
                 test_models.ForeignKeyModel.objects.create(related_id=42)
 
-    def test_source_mismatch(self):
+    def test_source_mismatch(self) -> None:
         # The field name matches, but the source model is different.
         rules = {
             conversion.ForeignKey(
@@ -226,7 +230,7 @@ class TestForeignKey:
             with conversion.refine_integrity_error(rules):
                 test_models.ForeignKeyModel.objects.create(related_id=42)
 
-    def test_field_mismatch(self):
+    def test_field_mismatch(self) -> None:
         # The source model matches, but the field name is different.
         rules = {
             conversion.ForeignKey(
