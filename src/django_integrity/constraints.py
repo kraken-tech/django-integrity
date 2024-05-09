@@ -7,7 +7,7 @@ from django import db as django_db
 try:
     from psycopg import sql
 except ImportError:
-    from psycopg2 import sql
+    from psycopg2 import sql  # type: ignore[no-redef]
 
 
 # Note [Deferrable constraints]

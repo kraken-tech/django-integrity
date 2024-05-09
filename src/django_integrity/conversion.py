@@ -12,7 +12,7 @@ from django import db as django_db
 try:
     import psycopg
 except ImportError:
-    import psycopg2 as psycopg
+    import psycopg2 as psycopg  # type: ignore[no-redef]
 
 
 @contextlib.contextmanager
