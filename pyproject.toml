@@ -66,6 +66,9 @@ release = [
     "tomli >= 1.1.0 ; python_version < '3.11'",
     "typer",
 ]
+tox = [
+    "tox",
+]
 dev = [
     # Testing
     "dj-database-url",
