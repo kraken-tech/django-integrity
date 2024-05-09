@@ -10,6 +10,8 @@ asgiref==3.8.1
     #   django-stubs
 cachetools==5.3.3
     # via tox
+cfgv==3.4.0
+    # via pre-commit
 chardet==5.2.0
     # via tox
 click==8.1.7
@@ -38,6 +40,8 @@ filelock==3.14.0
     # via
     #   tox
     #   virtualenv
+identify==2.5.36
+    # via pre-commit
 iniconfig==2.0.0
     # via pytest
 markdown-it-py==3.0.0
@@ -52,6 +56,8 @@ mypy-extensions==1.0.0
     # via mypy
 mypy-json-report==1.2.0
     # via django_integrity (pyproject.toml)
+nodeenv==1.8.0
+    # via pre-commit
 packaging==24.0
     # via
     #   marshmallow
@@ -66,6 +72,8 @@ pluggy==1.5.0
     # via
     #   pytest
     #   tox
+pre-commit==3.7.0
+    # via django_integrity (pyproject.toml)
 psycopg==3.1.18
     # via django_integrity (pyproject.toml)
 psycopg-binary==3.1.18
@@ -84,12 +92,12 @@ pytest-django==4.8.0
     # via django_integrity (pyproject.toml)
 python-dotenv==1.0.1
     # via environs
+pyyaml==6.0.1
+    # via pre-commit
 rich==13.7.1
     # via
     #   django_integrity (pyproject.toml)
     #   typer
-ruff==0.4.3
-    # via django_integrity (pyproject.toml)
 shellingham==1.5.4
     # via typer
 sqlparse==0.5.0
@@ -120,4 +128,9 @@ typing-extensions==4.11.0
     #   psycopg
     #   typer
 virtualenv==20.26.1
-    # via tox
+    # via
+    #   pre-commit
+    #   tox
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

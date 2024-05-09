@@ -14,7 +14,7 @@ help:
 # =====================
 
 .PHONY:install
-install: install_python_packages
+install: install_python_packages install_pre_commit
 
 .PHONY:test
 test:
@@ -22,7 +22,8 @@ test:
 	./scripts/type-ratchet.py check
 
 .PHONY:lint
-lint: format style typing
+lint:
+	pre-commit run --all-files
 
 .PHONY:update
 update:
@@ -57,21 +58,13 @@ install_python_packages: install_prerequisites requirements/development.txt
 install_prerequisites: requirements/prerequisites.txt
 	pip install --quiet --requirement requirements/prerequisites.txt
 
+.PHONY:install_pre_commit
+install_pre_commit:
+	pre-commit install
+
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
 	pip-compile pyproject.toml \
 		--quiet --resolver=backtracking --strip-extras \
 		--extra=dev \
 		--output-file=requirements/development.txt
-
-.PHONY:format
-format:
-	ruff format --check .
-
-.PHONY:style
-style:
-	ruff check --fix .
-
-.PHONY:typing
-typing:
-	./scripts/type-ratchet.py update

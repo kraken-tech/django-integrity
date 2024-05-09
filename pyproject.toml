@@ -85,7 +85,7 @@ dev = [
     # Linting
     "mypy",
     "mypy-json-report",
-    "ruff",
+    "pre-commit",
 
     # CLI utils
     "rich",
