@@ -80,11 +80,11 @@ def create_user(email: str) -> User:
         EmailCannotBeNull: If the email was None.
         EmailMustBeLowerCase: If the email had a non-lowercase character.
     """
-    rules = {
-        conversion.Unique(model=User, fields=("email",)): UserAlreadyExists,
-        conversion.NotNull(model=User, field="email"): EmailCannotBeNull,
-        conversion.Named(name="constraint_islowercase"): EmailMustBeLowerCase,
-    }
+    rules = [
+        (conversion.Unique(model=User, fields=("email",)), UserAlreadyExists),
+        (conversion.NotNull(model=User, field="email"), EmailCannotBeNull),
+        (conversion.Named(name="constraint_islowercase"), EmailMustBeLowerCase),
+    ]
     with conversion.refine_integrity_error(rules):
         User.objects.create(email=email)
 ```
