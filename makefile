@@ -27,20 +27,20 @@ lint:
 
 .PHONY:update
 update:
-	pip-compile pyproject.toml \
+	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
 		--extra=dev \
 		--output-file=requirements/development.txt
-	pip-compile pyproject.toml \
+	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
 		--extra=pytest-in-tox \
 		--output-file=requirements/pytest-in-tox.txt \
 		--unsafe-package django
-	pip-compile pyproject.toml \
+	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
 		--extra=release \
 		--output-file=requirements/release.txt
-	pip-compile pyproject.toml \
+	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
 		--extra=tox \
 		--output-file=requirements/tox.txt
@@ -52,7 +52,7 @@ update:
 # Pip install all required Python packages
 .PHONY:install_python_packages
 install_python_packages: install_prerequisites requirements/development.txt
-	pip-sync requirements/development.txt
+	uv pip sync requirements/development.txt
 
 .PHONY:install_prerequisites
 install_prerequisites: requirements/prerequisites.txt
@@ -64,7 +64,7 @@ install_pre_commit:
 
 # Add new dependencies to requirements/development.txt whenever pyproject.toml changes
 requirements/development.txt: pyproject.toml
-	pip-compile pyproject.toml \
+	uv pip compile pyproject.toml \
 		--quiet --resolver=backtracking --strip-extras \
 		--extra=dev \
 		--output-file=requirements/development.txt
