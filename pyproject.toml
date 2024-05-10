@@ -156,5 +156,7 @@ django_settings_module = "tests.example_app.settings"
 [tool.pytest.ini_options]
 # Ensure error warnings are converted into test errors.
 filterwarnings = "error"
+# Ensure that tests fail if an xfail test unexpectedly passes.
+xfail_strict = true
 
 DJANGO_SETTINGS_MODULE = "tests.example_app.settings"

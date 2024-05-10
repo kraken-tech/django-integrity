@@ -1,6 +1,7 @@
 import pytest
 from django import db as django_db
 from django.core import exceptions
+from django.db import transaction
 
 from django_integrity import constraints
 from tests.example_app import models as test_models
@@ -48,16 +49,18 @@ class TestSetAllImmediate:
             # The ForeignKey constraint should be enforced immediately.
             test_models.ForeignKeyModel.objects.create(related_id=42)
 
-    @pytest.mark.django_db
-    @pytest.mark.xfail(raises=django_db.IntegrityError)
+    @pytest.mark.django_db(transaction=True)
     def test_constraint_not_set(self) -> None:
-        # This try block proves that the constraint isn't enforced immediately.
-        # It's deferred, so the error is raised in the shutdown phase of the test.
-        # We use xfail to catch the error and prevent the test from failing.
-        try:
-            test_models.ForeignKeyModel.objects.create(related_id=42)
-        except django_db.IntegrityError:
-            pytest.fail("The ForeignKey constraint should be deferred.")
+        # We handle transaction open/close manually in this test
+        # so that we can catch exceptions from the COMMIT.
+        transaction.set_autocommit(False)
+
+        # The related object does not exist.
+        # This would raise an IntegrityError if the FK constraint wasn't deferred.
+        test_models.ForeignKeyModel.objects.create(related_id=42)
+
+        with pytest.raises(django_db.IntegrityError):
+            transaction.commit()
 
     @pytest.mark.django_db(transaction=True)
     def test_not_in_transaction(self) -> None:
