@@ -18,6 +18,7 @@ where = ["src"]
 [project]
 name = "django_integrity"
 version = "0.1.1"
+description = "Tools for refining Django's IntegrityError, and working with deferred database constraints."
 license.file = "LICENSE"
 readme = "README.md"
 requires-python = ">=3.10"
