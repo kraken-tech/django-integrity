@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased changes
 
+## v0.2.0 - 2024-05-13
+
 - Change type signature of `django_integrity.conversion.refine_integrity_error`.
   Instead of accepting `Mapping[_Rule, Exception]`, it now accepts `Sequence[tuple[_Rule, Exception | type[Exception]]`.
   This prevents issues with typing, and removes the need for `_Rule` to be hashable.
