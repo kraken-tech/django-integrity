@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased changes
 
+### Changed
+
+- The package is now tested against Python3.14
+  and verified to support that version.
+
 ## v0.2.0 - 2024-05-13
 
 ### Changed
