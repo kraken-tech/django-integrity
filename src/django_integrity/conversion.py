@@ -65,6 +65,9 @@ class Named(_Rule):
     name: str
 
     def is_match(self, error: django_db.IntegrityError) -> bool:
+        if error.__cause__ is None:
+            return False
+
         if not isinstance(error.__cause__, psycopg.errors.IntegrityError):
             return False
 
