@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 - The package is now tested against Python3.14
   and verified to support that version.
+- The package no longer has extra dependencies.
 
 ### Removed
 

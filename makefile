@@ -29,20 +29,20 @@ lint:
 update:
 	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
-		--extra=dev \
+		--group=dev \
 		--output-file=requirements/development.txt
 	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
-		--extra=pytest-in-tox \
+		--group=pytest-in-tox \
 		--output-file=requirements/pytest-in-tox.txt \
 		--unsafe-package django
 	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
-		--extra=release \
+		--group=release \
 		--output-file=requirements/release.txt
 	uv pip compile pyproject.toml \
 		--quiet --upgrade --resolver=backtracking --strip-extras \
-		--extra=tox \
+		--group=tox \
 		--output-file=requirements/tox.txt
 
 
