@@ -9,6 +9,11 @@ All notable changes to this project will be documented in this file.
 - The package is now tested against Python3.14
   and verified to support that version.
 
+### Removed
+
+- The package is no longer tested against Django 4.2
+  and it is not verified to support that version.
+
 ## v0.2.0 - 2024-05-13
 
 ### Changed
