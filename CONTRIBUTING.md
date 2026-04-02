@@ -2,6 +2,16 @@
 
 ## Local development
 
+The following tools must be available on your system
+to set up a development environment:
+
+- `make`
+- [Python]
+- [uv]
+
+[Python]: https://www.python.org/downloads/
+[uv]: https://docs.astral.sh/uv/
+
 ### Creating a virtual environment
 
 Ensure one of the supported Pythons (see README) is installed and used by the `python` executable:
@@ -14,12 +24,9 @@ Then create and activate a virtual environment. If you don't have any other way 
 environments this can be done by running:
 
 ```sh
-python3 -m venv .venv
+make install
 source .venv/bin/activate
 ```
-
-You could also use [virtualenvwrapper], [direnv] or any similar tool to help manage your virtual
-environments.
 
 ### Install PostgreSQL
 
@@ -67,10 +74,8 @@ Package dependencies are declared in `pyproject.toml`.
 - _development_ dependencies in the `dev` array in the `[project.optional-dependencies]` section.
 
 For local development, the dependencies declared in `pyproject.toml` are pinned to specific
-versions using the `requirements/development.txt` lock file.
-You should not manually edit the `requirements/development.txt` lock file.
-
-Prerequisites for installing those dependencies are tracked in the `requirements/prerequisites.txt`.
+versions using the `uv.lock` lock file.
+You should not manually edit the `uv.lock` lock file.
 
 
 #### Adding a new dependency
@@ -84,14 +89,14 @@ make install
 
 This will:
 
-1. Build a new version of the `requirements/development.txt` lock file containing the newly added
+1. Build a new version of the `uv.lock` lock file containing the newly added
    package.
-2. Sync your installed packages with those pinned in `requirements/development.txt`.
+2. Sync your installed packages with those pinned in `uv.lock`.
 
 This will not change the pinned versions of any packages already in any requirements file unless
 needed by the new packages, even if there are updated versions of those packages available.
 
-Remember to commit your changed `requirements/development.txt` files alongside the changed
+Remember to commit your changed `uv.lock` files alongside the changed
 `pyproject.toml`.
 
 #### Removing a dependency
@@ -107,7 +112,7 @@ To update the pinned versions of all packages run:
 make update
 ```
 
-This will update the pinned versions of every package in the `requirements/development.txt` lock
+This will update the pinned versions of every package in the `uv.lock` lock
 file to the latest version which is compatible with the constraints in `pyproject.toml`.
 
 You can then run:
@@ -116,14 +121,14 @@ You can then run:
 make install
 ```
 
-to sync your installed packages with the updated versions pinned in `requirements/development.txt`.
+to sync your installed packages with the updated versions pinned in `uv.lock`.
 
 #### Updating individual Python packages
 
 Upgrade a single development dependency with:
 
 ```sh
-pip-compile -P $PACKAGE==$VERSION pyproject.toml --resolver=backtracking --extra=dev --output-file=requirements/development.txt
+uv lock -P $PACKAGE==$VERSION --resolver=backtracking
 ```
 
 You can then run:
@@ -132,6 +137,6 @@ You can then run:
 make install
 ```
 
-to sync your installed packages with the updated versions pinned in `requirements/development.txt`.
+to sync your installed packages with the updated versions pinned in `uv.lock`.
 
 [tox]: https://tox.wiki

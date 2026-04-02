@@ -51,9 +51,7 @@ classifiers = [
 repository = "https://github.com/kraken-tech/django-integrity"
 changelog = "https://github.com/kraken-tech/django-integrity/blob/main/CHANGELOG.md"
 
-[project.optional-dependencies]
-# None of these extras are recommended for normal installation.
-# We use combinations of these groups in development and testing environments.
+[dependency-groups]
 pytest-in-tox = [
     # We deliberately exclude Django and Psycopg from this list because
     # this groups is used for running the pytest tests with tox,
@@ -75,28 +73,20 @@ tox = [
     "tox>=4.15.0",
 ]
 dev = [
+    {include-group = "release"},
+    {include-group = "tox"},
+    {include-group = "pytest-in-tox"},
+
     # Testing
-    "dj-database-url>=2.1.0",
     "django>=4.2.0",
-    "django-stubs>=5.0.0",
-    "environs>=11.0.0",
     "psycopg2-binary>=2.9.9",
     "psycopg[binary]>=3.1.18",
-    "pytest-django>=4.8.0",
-    "pytest>=8.2.0",
-    "tox>=4.15.0",
     "types-psycopg2>=2.9.21.20240417",
 
     # Linting
     "mypy>=1.10.0",
     "mypy-json-report>=1.2.0",
     "pre-commit>=3.7.0",
-
-    # CLI utils
-    "packaging>=24.0",
-    "rich>=13.7.1",
-    "tomli >= 1.1.0 ; python_version < '3.11'",
-    "typer>=0.12.3",
 ]
 
 # Ruff
