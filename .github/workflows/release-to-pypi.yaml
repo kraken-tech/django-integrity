@@ -40,7 +40,7 @@ jobs:
             tox.ini
 
       - name: Install requirements
-        run: pip install --requirement requirements/release.txt
+        run: pip install --group release
 
       - name: Verify version
         run: ./scripts/verify-version-tag.py

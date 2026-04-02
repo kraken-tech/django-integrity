@@ -22,7 +22,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: |
             pyproject.toml
-            requirements/*.txt
+            uv.lock
             tox.ini
 
       - name: Make a virtualenv
@@ -31,7 +31,7 @@ jobs:
       - name: Install requirements
         run: |
           source .venv/bin/activate
-          make install
+          pip install --group dev
 
       - name: Run linters
         run: |
