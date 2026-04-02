@@ -9,11 +9,17 @@ All notable changes to this project will be documented in this file.
 - The package is now tested against Python3.14
   and verified to support that version.
 - The package no longer has extra dependencies.
+- The package is now tested against Django 5.2 (LTS)
+  and verified to support that version.
+- The package is now tested against Django 6.0
+  and verified to support that version.
 
 ### Removed
 
 - The package is no longer tested against Django 4.2
   and it is not verified to support that version.
+- The package is no longer tested against Postgres 12 or 13
+  and it is not verified to support those versions.
 
 ## v0.2.0 - 2024-05-13
 

@@ -94,6 +94,6 @@ def create_user(email: str) -> User:
 This package is tested against:
 
 - Python 3.10, 3.11, 3.12, 3.13, and 3.14.
-- Django 4.2 or 5.0.
-- PostgreSQL 12 to 16.
+- Django 4.2, 5.0, 5.2, or 6.0.
+- PostgreSQL 14 to 16.
 - psycopg2 and psycopg3.
