@@ -13,6 +13,10 @@ All notable changes to this project will be documented in this file.
   and verified to support that version.
 - The package is now tested against Django 6.0
   and verified to support that version.
+- The package is now tested against Postgres 17
+  and verified to support that version.
+- The package is now tested against Postgres 18
+  and verified to support that version.
 
 ### Removed
 
