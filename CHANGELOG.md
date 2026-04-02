@@ -11,6 +11,8 @@ All notable changes to this project will be documented in this file.
 - The package no longer has extra dependencies.
 - The package is now tested against Django 5.2 (LTS)
   and verified to support that version.
+- The package is now tested against Django 6.0
+  and verified to support that version.
 
 ### Removed
 
