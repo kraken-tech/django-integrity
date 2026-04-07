@@ -50,7 +50,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: |
             pyproject.toml
-            requirements/*.txt
+            uv.lock
             tox.ini
 
       - name: Make a virtualenv

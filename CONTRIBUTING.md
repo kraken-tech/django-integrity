@@ -93,7 +93,7 @@ This will:
    package.
 2. Sync your installed packages with those pinned in `uv.lock`.
 
-This will not change the pinned versions of any packages already in any requirements file unless
+This will not change the pinned versions of any packages already in the lock file unless
 needed by the new packages, even if there are updated versions of those packages available.
 
 Remember to commit your changed `uv.lock` files alongside the changed
