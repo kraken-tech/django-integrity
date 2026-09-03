@@ -19,6 +19,11 @@ jobs:
           - "postgres:16"
           - "postgres:17"
           - "postgres:18"
+        include:
+          # Django 6.1 dropped support for PostgreSQL 14, so skip that
+          # combination. The value is a regex passed to tox's --skip-env.
+          - postgres-image: "postgres:14"
+            tox-skip-env: ".*django61"
 
     services:
       postgres:
@@ -67,6 +72,9 @@ jobs:
           tox --parallel --parallel-no-spinner --skip-missing-interpreters=false
         env:
           DATABASE_URL: postgres://postgres:postgres@localhost/django_integrity
+          # Empty for all images except postgres:14 (see the matrix above),
+          # where it skips the unsupported Django 6.1 environments.
+          TOX_SKIP_ENV: ${{ matrix.tox-skip-env }}
 
   validate_commits:
     runs-on: ubuntu-22.04
